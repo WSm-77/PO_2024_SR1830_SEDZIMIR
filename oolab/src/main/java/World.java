@@ -14,18 +14,10 @@ public class World {
     public static void run(String[] args) {
         System.out.println("WSm idzie do przodu!!!");
 
-        int numOfArgs = args.length;
-
+        // wyświetlenie listy argumentów
+        var commaSeparatedArgs = String.join(", ", args);
         System.out.println("Lista argumentów:");
+        System.out.println(commaSeparatedArgs);
 
-        // wyświetl wszystkie argumenty poza ostatnim
-        for (var arg : Arrays.copyOfRange(args, 0, numOfArgs - 1)) {
-            System.out.print(arg + ", ");
-        }
-
-        // wyświetl ostatni argument
-        if (numOfArgs > 0) {
-            System.out.println(args[numOfArgs - 1]);
-        }
     }
 }
