@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-import java.util.Arrays;
+import agh.ics.oop.model.MoveDirection;
 
 public class World {
     private final static String petName = "WSm";
@@ -9,32 +9,24 @@ public class World {
         // start
         System.out.println("system wystartował");
 
-        World.run(args);
+        MoveDirection[] directions = OptionsParser.parseStringArray(args);
+        World.run(directions);
 
         // stop
         System.out.println("system zakończył działanie");
     }
 
-    public static void run(String[] args) {
-        // wyświetlenie listy argumentów
-        var commaSeparatedArgs = String.join(", ", args);
-        System.out.println("Lista argumentów:");
-        System.out.println(commaSeparatedArgs);
-
+    public static void run(MoveDirection[] directions) {
         // interpretacja argumentów
-        for (var arg : args) {
-            String directionMessage = switch (arg) {
-                case "f" -> "idzie do przodu";
-                case "b" -> "idzie do tyłu";
-                case "l" -> "skręca w lewo";
-                case "r" -> "skręca w prawo";
-                default -> "";
+        for (var direction : directions) {
+            String directionMessage = switch (direction) {
+                case MoveDirection.FORWARD -> "idzie do przodu";
+                case MoveDirection.BACKWARD -> "idzie do tyłu";
+                case MoveDirection.LEFT -> "skręca w lewo";
+                case MoveDirection.RIGHT -> "skręca w prawo";
                 };
 
-            if (!directionMessage.isEmpty()) {
-                System.out.println(World.petName + " " + directionMessage);
-            }
+            System.out.println(World.petName + " " + directionMessage);
         }
-
     }
 }
