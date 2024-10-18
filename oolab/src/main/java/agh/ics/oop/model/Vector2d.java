@@ -26,6 +26,7 @@ public class Vector2d {
         return this.y;
     }
 
+    @Override
     public String toString() {
         return String.format("(%d,%d)", this.getX(), this.getY());
     }
