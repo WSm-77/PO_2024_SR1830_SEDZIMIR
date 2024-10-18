@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.MapDirections;
+import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 
@@ -22,7 +22,7 @@ public class World {
         System.out.println(position1.add(position2));
 
         // MapDirections verification
-        MapDirections direction = MapDirections.NORTH;
+        MapDirection direction = MapDirection.NORTH;
         System.out.println(direction.toString());
         System.out.println(direction.next().toString());
         System.out.println(direction.previous().toString());

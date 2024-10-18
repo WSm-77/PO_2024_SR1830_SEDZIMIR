@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-public enum MapDirections {
+public enum MapDirection {
     NORTH,
     SOUTH,
     WEST,
@@ -15,7 +15,7 @@ public enum MapDirections {
         };
     }
 
-    public MapDirections next() {
+    public MapDirection next() {
         return switch (this) {
             case NORTH -> EAST;
             case EAST -> SOUTH;
@@ -24,7 +24,7 @@ public enum MapDirections {
         };
     }
 
-    public MapDirections previous() {
+    public MapDirection previous() {
         return switch (this) {
             case NORTH -> WEST;
             case EAST -> NORTH;
