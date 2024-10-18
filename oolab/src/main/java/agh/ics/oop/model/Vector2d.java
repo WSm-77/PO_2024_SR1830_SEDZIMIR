@@ -73,12 +73,10 @@ public class Vector2d {
             return true;
         }
 
-        // check if object other is not null and both object are the same type
-        if (other == null || this.getClass() != other.getClass()) {
+        if (!(other instanceof Vector2d otherVector2d)) {
             return false;
         }
 
-        Vector2d otherVector2d = (Vector2d) other;
         return x == otherVector2d.x && y == otherVector2d.y;
     }
 
