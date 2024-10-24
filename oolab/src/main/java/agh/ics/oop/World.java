@@ -5,6 +5,8 @@ import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 
+import java.util.List;
+
 public class World {
     private final static String petName = "WSm";
 
@@ -12,7 +14,7 @@ public class World {
         // start
         System.out.println("system wystartował");
 
-        MoveDirection[] directions = OptionsParser.parseStringArray(args);
+        List<MoveDirection> directions = OptionsParser.parseStringArray(args);
         World.run(directions);
 
         // Vector2d verification
@@ -38,7 +40,7 @@ public class World {
         System.out.println("system zakończył działanie");
     }
 
-    public static void run(MoveDirection[] directions) {
+    public static void run(List<MoveDirection> directions) {
         // interpretacja argumentów
         for (var direction : directions) {
             String directionMessage = switch (direction) {
