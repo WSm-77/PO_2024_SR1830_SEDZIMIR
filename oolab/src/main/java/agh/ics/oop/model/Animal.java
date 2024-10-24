@@ -1,7 +1,7 @@
 package agh.ics.oop.model;
 
 public class Animal {
-    private static final Vector2d MAP_LOWER_LEFT_BOUNDARY = new Vector2d(4, 4);
+    private static final Vector2d MAP_LOWER_LEFT_BOUNDARY = new Vector2d(0, 0);
     private static final Vector2d MAP_UPPER_RIGHT_BOUNDARY = new Vector2d(4, 4);
     private MapDirection orientation;
 
