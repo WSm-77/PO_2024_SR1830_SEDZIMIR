@@ -18,9 +18,9 @@ public class World {
         World.run(directions);
 
         // Vector2d verification
-        Vector2d position1 = new Vector2d(1,2);
+        Vector2d position1 = new Vector2d(1, 2);
         System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
+        Vector2d position2 = new Vector2d(-2, 1);
         System.out.println(position2);
         System.out.println(position1.add(position2));
 
@@ -36,12 +36,16 @@ public class World {
         System.out.println("status zwierzaka:");
         System.out.println(animalWSm.toString());
 
+        // run Simulation
+        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        Simulation simulation = new Simulation(positions, directions);
+        simulation.run();
+
         // stop
         System.out.println("system zakończył działanie");
     }
 
     public static void run(List<MoveDirection> directions) {
-        // interpretacja argumentów
         for (var direction : directions) {
             String directionMessage = switch (direction) {
                 case MoveDirection.FORWARD -> "idzie do przodu";
