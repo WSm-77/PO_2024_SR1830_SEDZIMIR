@@ -3,16 +3,10 @@ package agh.ics.oop.model;
 import java.util.Objects;
 
 public class Vector2d {
-    /*===========*\
-     * attributes *
-    \*===========*/
     private final int x;
 
     private final int y;
 
-    /*=========*\
-     * methods *
-    \*=========*/
     public Vector2d(int x, int y) {
         this.x = x;
         this.y = y;
