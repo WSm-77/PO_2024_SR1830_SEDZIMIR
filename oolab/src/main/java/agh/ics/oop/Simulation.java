@@ -32,6 +32,10 @@ public class Simulation {
     }
 
     public void run() {
+        if (this.animals.isEmpty()){
+            return;
+        }
+
         // set iterator to first element
         var animalsIterator = this.animals.listIterator();
 
