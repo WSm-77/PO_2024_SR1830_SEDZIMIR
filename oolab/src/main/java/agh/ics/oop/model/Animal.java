@@ -1,11 +1,12 @@
 package agh.ics.oop.model;
 
 public class Animal {
-    private static final Vector2d DEFAULT_POSITION = new Vector2d(2, 2);
-    private static final Vector2d MAP_LOWER_LEFT_BOUNDARY = new Vector2d(0, 0);
-    private static final Vector2d MAP_UPPER_RIGHT_BOUNDARY = new Vector2d(4, 4);
-    private MapDirection orientation;
+    public static final Vector2d DEFAULT_POSITION = new Vector2d(2, 2);
+    public static final Vector2d MAP_LOWER_LEFT_BOUNDARY = new Vector2d(0, 0);
+    public static final Vector2d MAP_UPPER_RIGHT_BOUNDARY = new Vector2d(4, 4);
+    public static final MapDirection DEFAULT_ORIENTATION = MapDirection.NORTH;
 
+    private MapDirection orientation;
     private Vector2d position;
 
     public Animal() {
@@ -14,7 +15,7 @@ public class Animal {
 
     public Animal(Vector2d position) {
         this.position = position;
-        this.orientation = MapDirection.NORTH;
+        this.orientation = Animal.DEFAULT_ORIENTATION;
     }
 
     public boolean isAt(Vector2d position) {
