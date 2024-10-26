@@ -49,4 +49,12 @@ public class Animal {
     public String toString() {
         return String.format("pozycja: %s, orientacja: %s", position.toString(), orientation.toString());
     }
+
+    public Vector2d getPosition() {
+        return this.position;
+    }
+
+    public MapDirection getOrientation() {
+        return this.orientation;
+    }
 }
