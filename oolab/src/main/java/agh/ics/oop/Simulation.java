@@ -11,6 +11,14 @@ public class Simulation {
     private final List<Animal> animals;
     private final List<MoveDirection> moves;
 
+    public List<Animal> getAnimals() {
+        return this.animals;
+    }
+
+    public List<MoveDirection> getMoves() {
+        return this.moves;
+    }
+
     public Simulation(List<Vector2d> positions, List<MoveDirection> moves) {
         this.moves = moves;
 
