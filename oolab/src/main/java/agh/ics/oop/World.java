@@ -1,8 +1,11 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
+
+import java.util.List;
 
 public class World {
     private final static String petName = "WSm";
@@ -11,13 +14,13 @@ public class World {
         // start
         System.out.println("system wystartował");
 
-        MoveDirection[] directions = OptionsParser.parseStringArray(args);
+        List<MoveDirection> directions = OptionsParser.parseStringArray(args);
         World.run(directions);
 
         // Vector2d verification
-        Vector2d position1 = new Vector2d(1,2);
+        Vector2d position1 = new Vector2d(1, 2);
         System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
+        Vector2d position2 = new Vector2d(-2, 1);
         System.out.println(position2);
         System.out.println(position1.add(position2));
 
@@ -28,12 +31,21 @@ public class World {
         System.out.println(direction.previous().toString());
         System.out.println(direction.toUnitVector().toString());
 
+        // create animal
+        Animal animalWSm = new Animal();
+        System.out.println("status zwierzaka:");
+        System.out.println(animalWSm.toString());
+
+        // run Simulation
+        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        Simulation simulation = new Simulation(positions, directions);
+        simulation.run();
+
         // stop
         System.out.println("system zakończył działanie");
     }
 
-    public static void run(MoveDirection[] directions) {
-        // interpretacja argumentów
+    public static void run(List<MoveDirection> directions) {
         for (var direction : directions) {
             String directionMessage = switch (direction) {
                 case MoveDirection.FORWARD -> "idzie do przodu";
