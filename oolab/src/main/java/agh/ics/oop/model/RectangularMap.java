@@ -60,4 +60,9 @@ public class RectangularMap implements WorldMap {
     public boolean canMoveTo(Vector2d position) {
         return this.isOnMap(position) && !this.isOccupied(position);
     }
+
+    @Override
+    public String toString() {
+        return this.mapVisualizer.draw(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
+    }
 }
