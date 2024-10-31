@@ -41,7 +41,7 @@ public class RectangularMap implements WorldMap {
 
         // check if animal changed it's position
         var currentAnimalPosition = animal.getPosition();
-        if (Objects.equals(prevAnimalPosition, currentAnimalPosition)) {
+        if (!Objects.equals(prevAnimalPosition, currentAnimalPosition)) {
             this.animals.remove(prevAnimalPosition);
             this.place(animal);
         }
