@@ -34,6 +34,7 @@ public class Animal {
             }
             case BACKWARD -> {
                 Vector2d nextPosition = this.position.subtract(this.orientation.toUnitVector());
+
                 if (moveValidator.canMoveTo(nextPosition)) {
                     this.position = nextPosition;
                 }
