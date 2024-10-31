@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 public class Animal {
     public static final Vector2d DEFAULT_POSITION = new Vector2d(2, 2);
     public static final MapDirection DEFAULT_ORIENTATION = MapDirection.NORTH;
+    public static final int NO_FIRST_CHARACTERS_OF_ORIENTATION_NAME = 1;
 
     private MapDirection orientation;
     private Vector2d position;
@@ -42,7 +43,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return String.format("pozycja: %s, orientacja: %s", position.toString(), orientation.toString());
+        return this.orientation.name().substring(0, Animal.NO_FIRST_CHARACTERS_OF_ORIENTATION_NAME);
     }
 
     public Vector2d getPosition() {
