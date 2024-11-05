@@ -46,6 +46,12 @@ public class World {
         Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, directions, worldMap);
         simulation.run();
 
+        // TextMap Simulation
+        List<String> strings = new ArrayList<>(List.of("Ala", "ma", "sowoniedźwiedzia"));
+        WorldMap<String, Integer> textMap = new TextMap();
+        Simulation<String, Integer> textMapSimulation = new Simulation<>(strings, directions, textMap);
+        textMapSimulation.run();
+
         // stop
         System.out.println("system zakończył działanie");
     }
