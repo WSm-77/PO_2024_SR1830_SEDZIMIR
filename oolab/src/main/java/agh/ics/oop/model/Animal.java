@@ -21,7 +21,7 @@ public class Animal {
         return this.position.equals(position);
     }
 
-    public void move(MoveDirection direction, MoveValidator moveValidator) {
+    public void move(MoveDirection direction, MoveValidator<Vector2d> moveValidator) {
         switch (direction) {
             case RIGHT -> this.orientation = this.orientation.next();
             case LEFT -> this.orientation = this.orientation.previous();

@@ -1,65 +1,55 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
-    private final List<Animal> animals;
+public class Simulation<T, P> {
+    private final List<T> objects;
     private final List<MoveDirection> moves;
-    private final WorldMap worldMap;
+    private final WorldMap<T, P> worldMap;
 
-    public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap worldMap) {
+    public Simulation(List<T> objects, List<MoveDirection> moves, WorldMap<T, P> worldMap) {
+        this.objects = objects;
         this.worldMap = worldMap;
         this.moves = moves;
 
-        List<Animal> animals = new ArrayList<>();
-
-        for (var position : positions) {
-            animals.add(new Animal(position));
+        for (var object : this.objects) {
+            this.worldMap.place(object);
         }
 
-        this.animals = animals;
     }
 
-    public List<Animal> getAnimals() {
-        return this.animals;
+    public List<T> getObjects() {
+        return this.objects;
     }
 
     public List<MoveDirection> getMoves() {
         return this.moves;
     }
 
-    public WorldMap getWorldMap() {
+    public WorldMap<T, P> getWorldMap() {
         return this.worldMap;
     }
 
     public void run() {
-        if (this.animals.isEmpty()){
+        if (this.objects.isEmpty()){
             return;
         }
 
-        // place all animals at their starting position
-        for (var animal : this.animals) {
-            this.worldMap.place(animal);
-        }
-
         // set iterator to first element
-        var animalsIterator = this.animals.listIterator();
+        var objectsIterator = this.objects.listIterator();
 
         for (var move : this.moves) {
-            // check if we reached end of animals list
-            if (!animalsIterator.hasNext()) {
-                animalsIterator = this.animals.listIterator();
+            // check if we reached end of objects list
+            if (!objectsIterator.hasNext()) {
+                objectsIterator = this.objects.listIterator();
             }
 
-            Animal currentAnimal = animalsIterator.next();
+            T currentObject = objectsIterator.next();
 
-            this.worldMap.move(currentAnimal, move);
+            this.worldMap.move(currentObject, move);
             System.out.println(this.worldMap);
         }
     }

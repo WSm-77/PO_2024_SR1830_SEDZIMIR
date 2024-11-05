@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class World {
@@ -34,9 +35,15 @@ public class World {
         System.out.println(animalWSm.toString());
 
         // run Simulation
-        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-        WorldMap worldMap = new RectangularMap(4, 4);
-        Simulation simulation = new Simulation(positions, directions, worldMap);
+        List<Vector2d> positions = new ArrayList<>(List.of(new Vector2d(2, 2), new Vector2d(3, 4)));
+        List<Animal> animals = new ArrayList<>();
+
+        for (var position : positions) {
+            animals.add(new Animal(position));
+        }
+
+        WorldMap<Animal, Vector2d> worldMap = new RectangularMap(4, 4);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, directions, worldMap);
         simulation.run();
 
         // stop
