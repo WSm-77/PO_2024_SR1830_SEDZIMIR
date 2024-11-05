@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class RectangularMapIT {
-    private final WorldMap worldMap = new RectangularMap(4, 4);
+    private final WorldMap<Animal, Vector2d> worldMap = new RectangularMap(4, 4);
 
     @Test
     void placeOnMap() {

@@ -9,23 +9,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class SimulationIT {
-    private final WorldMap worldMap = new RectangularMap(4, 4);
+class RectangularMapSimulationITSimulationIT {
+    private final WorldMap<Animal, Vector2d> worldMap = new RectangularMap(4, 4);
+
+    // helper function
+    private List<Animal> initializeAnimalsList(List<Vector2d> positions) {
+        ArrayList<Animal> animals = new ArrayList<>();
+
+        for (var position : positions) {
+            animals.add(new Animal(position));
+        }
+
+        return animals;
+    }
 
     @Test
     public void noPositionsGiven() {
         // given
         ArrayList<Vector2d> positions = new ArrayList<>();
+        var animals = this.initializeAnimalsList(positions);
+
         ArrayList<MoveDirection> moves = new ArrayList<>(
                 Collections.nCopies(4, MoveDirection.FORWARD)
         );
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
-        Assertions.assertEquals(simulation.getAnimals().size(), 0);
+        Assertions.assertEquals(simulation.getObjects().size(), 0);
         // no exceptions should be risen
     }
 
@@ -36,17 +49,19 @@ class SimulationIT {
         ArrayList<Vector2d> positions = new ArrayList<>(List.of(
                 startPosition
         ));
+        var animals = this.initializeAnimalsList(positions);
+
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.RIGHT
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getOrientation(), MapDirection.EAST);
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getPosition(), startPosition);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getOrientation(), MapDirection.EAST);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getPosition(), startPosition);
     }
 
     @Test
@@ -56,17 +71,18 @@ class SimulationIT {
         ArrayList<Vector2d> positions = new ArrayList<>(List.of(
                 startPosition
         ));
+        var animals = this.initializeAnimalsList(positions);
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.LEFT
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getOrientation(), MapDirection.WEST);
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getPosition(), startPosition);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getOrientation(), MapDirection.WEST);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getPosition(), startPosition);
     }
 
     @Test
@@ -75,17 +91,18 @@ class SimulationIT {
         ArrayList<Vector2d> positions = new ArrayList<>(List.of(
                 new Vector2d(2, 2)
         ));
+        var animals = this.initializeAnimalsList(positions);
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.FORWARD
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getOrientation(), Animal.DEFAULT_ORIENTATION);
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getPosition(), new Vector2d(2, 3));
+        Assertions.assertEquals(simulation.getObjects().getFirst().getOrientation(), Animal.DEFAULT_ORIENTATION);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getPosition(), new Vector2d(2, 3));
     }
 
     @Test
@@ -94,17 +111,18 @@ class SimulationIT {
         ArrayList<Vector2d> positions = new ArrayList<>(List.of(
                 new Vector2d(2, 2)
         ));
+        var animals = this.initializeAnimalsList(positions);
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.BACKWARD
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getOrientation(), Animal.DEFAULT_ORIENTATION);
-        Assertions.assertEquals(simulation.getAnimals().getFirst().getPosition(), new Vector2d(2, 1));
+        Assertions.assertEquals(simulation.getObjects().getFirst().getOrientation(), Animal.DEFAULT_ORIENTATION);
+        Assertions.assertEquals(simulation.getObjects().getFirst().getPosition(), new Vector2d(2, 1));
     }
 
     @Test
@@ -115,6 +133,7 @@ class SimulationIT {
                 new Vector2d(1, 1),
                 new Vector2d(2, 2)
         ));
+        var animals = this.initializeAnimalsList(positions);
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD,
@@ -127,7 +146,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -142,8 +161,8 @@ class SimulationIT {
             MapDirection.WEST
         ));
         for (int i = 0; i < positions.size(); i++) {
-            Assertions.assertEquals(simulation.getAnimals().get(i).getPosition(), expectedPositions.get(i));
-            Assertions.assertEquals(simulation.getAnimals().get(i).getOrientation(), expectedOrientations.get(i));
+            Assertions.assertEquals(simulation.getObjects().get(i).getPosition(), expectedPositions.get(i));
+            Assertions.assertEquals(simulation.getObjects().get(i).getOrientation(), expectedOrientations.get(i));
         }
     }
 
@@ -154,6 +173,7 @@ class SimulationIT {
                 new Vector2d(0, 0),
                 new Vector2d(4, 4)
         ));
+        var animals = this.initializeAnimalsList(positions);
         ArrayList<MoveDirection> moves = new ArrayList<>(List.of(
                 MoveDirection.BACKWARD,     // out of bottom bounds
                 MoveDirection.FORWARD,      // out of top bounds
@@ -168,7 +188,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+        Simulation<Animal, Vector2d> simulation = new Simulation<>(animals, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -178,8 +198,8 @@ class SimulationIT {
                 MapDirection.EAST
         ));
         for (int i = 0; i < positions.size(); i++) {
-            Assertions.assertEquals(simulation.getAnimals().get(i).getPosition(), positions.get(i));
-            Assertions.assertEquals(simulation.getAnimals().get(i).getOrientation(), expectedOrientations.get(i));
+            Assertions.assertEquals(simulation.getObjects().get(i).getPosition(), positions.get(i));
+            Assertions.assertEquals(simulation.getObjects().get(i).getOrientation(), expectedOrientations.get(i));
         }
     }
 }
