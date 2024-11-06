@@ -1,9 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.MapDirection;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.*;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 class SimulationIT {
+    private final WorldMap worldMap = new RectangularMap(4, 4);
+
     @Test
     public void noPositionsGiven() {
         // given
@@ -22,7 +21,7 @@ class SimulationIT {
         );
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -42,7 +41,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -62,7 +61,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -81,7 +80,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -100,7 +99,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -128,7 +127,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then
@@ -169,7 +168,7 @@ class SimulationIT {
         ));
 
         // when
-        Simulation simulation = new Simulation(positions, moves);
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
         simulation.run();
 
         // then

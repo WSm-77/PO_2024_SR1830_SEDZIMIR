@@ -3,6 +3,7 @@ package agh.ics.oop;
 import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +11,10 @@ import java.util.List;
 public class Simulation {
     private final List<Animal> animals;
     private final List<MoveDirection> moves;
+    private final WorldMap worldMap;
 
-    public List<Animal> getAnimals() {
-        return this.animals;
-    }
-
-    public List<MoveDirection> getMoves() {
-        return this.moves;
-    }
-
-    public Simulation(List<Vector2d> positions, List<MoveDirection> moves) {
+    public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap worldMap) {
+        this.worldMap = worldMap;
         this.moves = moves;
 
         List<Animal> animals = new ArrayList<>();
@@ -31,9 +26,26 @@ public class Simulation {
         this.animals = animals;
     }
 
+    public List<Animal> getAnimals() {
+        return this.animals;
+    }
+
+    public List<MoveDirection> getMoves() {
+        return this.moves;
+    }
+
+    public WorldMap getWorldMap() {
+        return this.worldMap;
+    }
+
     public void run() {
         if (this.animals.isEmpty()){
             return;
+        }
+
+        // place all animals at their starting position
+        for (var animal : this.animals) {
+            this.worldMap.place(animal);
         }
 
         // set iterator to first element
@@ -45,11 +57,10 @@ public class Simulation {
                 animalsIterator = this.animals.listIterator();
             }
 
-            int animalId = animalsIterator.nextIndex();
             Animal currentAnimal = animalsIterator.next();
 
-            currentAnimal.move(move);
-            System.out.printf("Zwierzak %d : %s\n", animalId, currentAnimal.toString());
+            this.worldMap.move(currentAnimal, move);
+            System.out.println(this.worldMap);
         }
     }
 }
