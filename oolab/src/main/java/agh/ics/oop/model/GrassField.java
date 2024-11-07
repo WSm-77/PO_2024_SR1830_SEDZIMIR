@@ -11,21 +11,16 @@ public class GrassField implements WorldMap {
     private final Map<Vector2d, Animal> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grassFields = new HashMap<>();
     private final MapVisualizer mapVisualizer  = new MapVisualizer(this);
-    private final int totalGrassFieldOnTheMap;
-    private final int grassMaxYCoordinate;
-    private final int grassMaxXCoordinate;
-
     private Vector2d mapLowerLeftBoundary;
     private Vector2d mapUpperRightBoundary;
 
     public GrassField(int totalGrassFieldOnTheMap) {
         this.mapLowerLeftBoundary = GrassField.DEFAULT_POSITION;
         this.mapUpperRightBoundary = GrassField.DEFAULT_POSITION;
-        this.totalGrassFieldOnTheMap = totalGrassFieldOnTheMap;
-        this.grassMaxXCoordinate = (int)Math.floor(Math.sqrt(10*this.totalGrassFieldOnTheMap));
-        this.grassMaxYCoordinate = this.grassMaxXCoordinate;
+        int grassMaxXCoordinate = (int)Math.floor(Math.sqrt(10*totalGrassFieldOnTheMap));
+        int grassMaxYCoordinate = grassMaxXCoordinate;
 
-        var randomGrassPositions = new RandomPositionGenerator(this.grassMaxXCoordinate, this.grassMaxYCoordinate, this.totalGrassFieldOnTheMap);
+        var randomGrassPositions = new RandomPositionGenerator(grassMaxXCoordinate, grassMaxYCoordinate, totalGrassFieldOnTheMap);
         for (var grassPosition : randomGrassPositions) {
             var grass = new Grass(grassPosition);
             this.grassFields.put(grassPosition, grass);
@@ -33,18 +28,6 @@ public class GrassField implements WorldMap {
             // update map boundaries
             this.updateBoundaries(grassPosition);
         }
-    }
-
-    public int getTotalGrassFieldOnTheMap() {
-        return this.totalGrassFieldOnTheMap;
-    }
-
-    public int getGrassMaxYCoordinate() {
-        return this.grassMaxYCoordinate;
-    }
-
-    public int getGrassMaxXCoordinate() {
-        return this.grassMaxXCoordinate;
     }
 
     public Vector2d getMapLowerLeftBoundary() {
