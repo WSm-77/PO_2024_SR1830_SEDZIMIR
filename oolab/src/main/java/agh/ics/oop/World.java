@@ -33,10 +33,18 @@ public class World {
         System.out.println("status zwierzaka:");
         System.out.println(animalWSm.toString());
 
-        // run Simulation
+        // Simulation
         List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
-        WorldMap worldMap = new RectangularMap(4, 4);
-        Simulation simulation = new Simulation(positions, directions, worldMap);
+        Simulation simulation;
+
+        // 1. RectangularMap Simulation
+        WorldMap rectangularMap = new RectangularMap(4, 4);
+        simulation = new Simulation(positions, directions, rectangularMap);
+        simulation.run();
+
+        // 2. GrassField Simulation
+        WorldMap grassField = new GrassField(10);
+        simulation = new Simulation(positions, directions, grassField);
         simulation.run();
 
         // stop

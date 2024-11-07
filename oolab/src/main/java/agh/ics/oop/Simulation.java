@@ -48,6 +48,9 @@ public class Simulation {
             this.worldMap.place(animal);
         }
 
+        // show map before movement
+        System.out.println(this.worldMap);
+
         // set iterator to first element
         var animalsIterator = this.animals.listIterator();
 
