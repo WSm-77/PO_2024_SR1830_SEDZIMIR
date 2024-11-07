@@ -51,6 +51,10 @@ public class GrassField implements WorldMap {
         this.updateUpperRightBoundary(position);
     }
 
+    public List<WorldElement> getGrassList() {
+        return new ArrayList<>(this.grassFields.values());
+    }
+
     @Override
     public boolean place(Animal animal) {
         final Vector2d positionToPlace = animal.getPosition();
