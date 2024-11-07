@@ -49,7 +49,7 @@ public class RectangularMap implements WorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return this.animals.containsKey(position) && this.animals.get(position) != null;
+        return this.animals.containsKey(position);
     }
 
     @Override
