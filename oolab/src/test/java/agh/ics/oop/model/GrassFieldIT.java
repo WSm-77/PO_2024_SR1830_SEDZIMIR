@@ -102,7 +102,7 @@ class GrassFieldIT {
     @Test
     void notOccupiedPosition() {
         // given
-        var notOccupiedPosition = new Vector2d(0, 0);
+        var notOccupiedPosition = new Vector2d(-1, -1);
 
         // when
         var nullObject = this.worldMap.objectAt(notOccupiedPosition);
