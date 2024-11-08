@@ -2,38 +2,57 @@ package agh.ics.oop.model.util;
 
 import agh.ics.oop.model.Vector2d;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class RandomPositionGenerator implements Iterable<Vector2d> {
     public static final Vector2d DEFAULT_START_POSITION = new Vector2d(0, 0);
-    private final List<Vector2d> randomPositions;
+    private final List<Vector2d> allPositions;
+    private final int elementsCount;
 
     public RandomPositionGenerator(int width, int height, int elementsCount){
-        this.randomPositions = RandomPositionGenerator.generatePositions(
-                RandomPositionGenerator.DEFAULT_START_POSITION, width, height, elementsCount
-        );
+        this.elementsCount = elementsCount;
+        this.allPositions = this.generatePositions(RandomPositionGenerator.DEFAULT_START_POSITION, width, height);
     }
 
-    public static List<Vector2d> generatePositions(Vector2d startPosition, int width, int height, int elementsCount) {
+    public List<Vector2d> generatePositions(Vector2d startPosition, int width, int height) {
         var allPositions = new ArrayList<Vector2d>();
-
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 var position = new Vector2d(startPosition.getX() + i, startPosition.getY() + j);
                 allPositions.add(position);
             }
         }
-
-        Collections.shuffle(allPositions);
-
-        return allPositions.subList(0, elementsCount);
+        return allPositions;
     }
 
     @Override
     public Iterator<Vector2d> iterator() {
-        return this.randomPositions.iterator();
+        return new RandomPositionGeneratorIterator(this.allPositions, this.elementsCount);
+    }
+
+    private static class RandomPositionGeneratorIterator implements Iterator<Vector2d> {
+        private int toGenerateCounter;
+        private final List<Vector2d> allPositions;
+
+        public RandomPositionGeneratorIterator(List<Vector2d> allPositions, int toGenerateCounter) {
+            this.allPositions = allPositions;
+            this.toGenerateCounter = toGenerateCounter;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.toGenerateCounter > 0;
+        }
+
+        @Override
+        public Vector2d next() {
+            Random random = new Random();
+            int randomIndex = random.nextInt(this.allPositions.size());
+            var randomPosition = this.allPositions.get(randomIndex);
+            this.allPositions.remove(randomIndex);
+            this.toGenerateCounter--;
+
+            return randomPosition;
+        }
     }
 }
