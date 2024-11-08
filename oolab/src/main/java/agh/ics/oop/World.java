@@ -5,7 +5,7 @@ import agh.ics.oop.model.*;
 import java.util.List;
 
 public class World {
-    private final static String petName = "WSm";
+    private final static String PET_NAME = "WSm";
 
     public static void main(String[] args) {
         // start
@@ -52,7 +52,7 @@ public class World {
                 case MoveDirection.RIGHT -> "skręca w prawo";
                 };
 
-            System.out.println(World.petName + " " + directionMessage);
+            System.out.println(World.PET_NAME + " " + directionMessage);
         }
     }
 }
