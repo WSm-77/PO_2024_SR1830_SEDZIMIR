@@ -2,9 +2,7 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.MapVisualizer;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 abstract public class AbstractWorldMap implements WorldMap {
     public static final Vector2d DEFAULT_POSITION = new Vector2d(0, 0);
@@ -54,5 +52,10 @@ abstract public class AbstractWorldMap implements WorldMap {
     @Override
     public String toString() {
         return this.mapVisualizer.draw(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
+    }
+
+    @Override
+    public List<WorldElement> getElements() {
+        return new ArrayList<>(this.animals.values());
     }
 }

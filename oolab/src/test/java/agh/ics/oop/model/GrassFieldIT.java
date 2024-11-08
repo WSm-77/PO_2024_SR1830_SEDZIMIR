@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GrassFieldIT {
     private final GrassField worldMap = new GrassField(10);
-    private final List<WorldElement> grassList = this.worldMap.getGrassList();
+    private final List<WorldElement> grassList = this.worldMap.getElements();
 
     @Test
     void placeOnMap() {

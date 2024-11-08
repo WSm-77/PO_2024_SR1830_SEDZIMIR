@@ -34,10 +34,6 @@ public class GrassField extends AbstractWorldMap {
         this.updateUpperRightBoundary(position);
     }
 
-    public List<WorldElement> getGrassList() {
-        return new ArrayList<>(this.grassFields.values());
-    }
-
     @Override
     public boolean place(Animal animal) {
         boolean result = super.place(animal);
@@ -56,5 +52,12 @@ public class GrassField extends AbstractWorldMap {
     public WorldElement objectAt(Vector2d position) {
         WorldElement worldElement = super.objectAt(position);
         return worldElement != null ? worldElement : this.grassFields.get(position);
+    }
+
+    @Override
+    public List<WorldElement> getElements() {
+        var concatenatedList = super.getElements();
+        concatenatedList.addAll(this.grassFields.values());
+        return concatenatedList;
     }
 }
