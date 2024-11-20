@@ -97,7 +97,7 @@ class RectangularMapIT {
         Vector2d positionWithoutAnimal = new Vector2d(2, 2);
 
         // when
-        Animal noneAnimal = this.worldMap.objectAt(positionWithoutAnimal);
+        var noneAnimal = this.worldMap.objectAt(positionWithoutAnimal);
 
         // then
         Assertions.assertNull(noneAnimal);
@@ -111,7 +111,7 @@ class RectangularMapIT {
 
         // when
         boolean isPlaced = this.worldMap.place(animal);
-        Animal animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal);
+        var animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal);
 
         // then
         Assertions.assertTrue(isPlaced);

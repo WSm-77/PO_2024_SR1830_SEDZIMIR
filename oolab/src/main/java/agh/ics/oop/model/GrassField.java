@@ -1,0 +1,65 @@
+package agh.ics.oop.model;
+
+import agh.ics.oop.model.util.RandomPositionGenerator;
+
+import java.util.*;
+
+import java.lang.Math;
+
+public class GrassField extends AbstractWorldMap {
+    private final Map<Vector2d, Grass> grassFields = new HashMap<>();
+
+    public GrassField(int totalGrassFieldOnTheMap) {
+        int grassMaxXCoordinate = (int)Math.floor(Math.sqrt(10*totalGrassFieldOnTheMap));
+        int grassMaxYCoordinate = grassMaxXCoordinate;
+
+        var randomGrassPositions = new RandomPositionGenerator(grassMaxXCoordinate, grassMaxYCoordinate, totalGrassFieldOnTheMap);
+        for (var grassPosition : randomGrassPositions) {
+            var grass = new Grass(grassPosition);
+            this.grassFields.put(grassPosition, grass);
+
+            // update map boundaries
+            this.updateBoundaries(grassPosition);
+        }
+    }
+
+    private void updateUpperRightBoundary(Vector2d position) {
+        this.mapUpperRightBoundary = this.mapUpperRightBoundary.upperRight(position);
+    }
+
+    private void updateLowerLeftBoundary(Vector2d position) {
+        this.mapLowerLeftBoundary = this.mapLowerLeftBoundary.lowerLeft(position);
+    }
+
+    private void updateBoundaries(Vector2d position) {
+        this.updateLowerLeftBoundary(position);
+        this.updateUpperRightBoundary(position);
+    }
+
+    @Override
+    public boolean place(Animal animal) {
+        boolean result = super.place(animal);
+        if (result) {
+            this.updateBoundaries(animal.getPosition());
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isOccupied(Vector2d position) {
+        return super.isOccupied((position)) || this.grassFields.containsKey(position);
+    }
+
+    @Override
+    public WorldElement objectAt(Vector2d position) {
+        WorldElement worldElement = super.objectAt(position);
+        return worldElement != null ? worldElement : this.grassFields.get(position);
+    }
+
+    @Override
+    public List<WorldElement> getElements() {
+        var concatenatedList = super.getElements();
+        concatenatedList.addAll(this.grassFields.values());
+        return concatenatedList;
+    }
+}
