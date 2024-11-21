@@ -57,7 +57,13 @@ abstract public class AbstractWorldMap implements WorldMap {
 
     @Override
     public String toString() {
-        return this.mapVisualizer.draw(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
+        var currentBounds = this.getCurrentBounds();
+        return this.mapVisualizer.draw(currentBounds.lowerLeft(), currentBounds.upperRight());
+    }
+
+    @Override
+    public Boundary getCurrentBounds() {
+        return new Boundary(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
     }
 
     @Override
