@@ -6,12 +6,21 @@ import java.util.List;
 
 public class World {
     private final static String PET_NAME = "WSm";
+    public final static int PARSER_ERROR = 1;
 
     public static void main(String[] args) {
         // start
         System.out.println("system wystartował");
 
-        List<MoveDirection> directions = OptionsParser.parseStringArray(args);
+        List<MoveDirection> directions = null;
+
+        try {
+            directions = OptionsParser.parseStringArray(args);
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+            System.exit(World.PARSER_ERROR);
+        }
+
         World.run(directions);
 
         // Vector2d verification
@@ -34,7 +43,8 @@ public class World {
         System.out.println(animalWSm.toString());
 
         // Simulation
-        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        var repeatedPosition = new Vector2d(2, 2);
+        List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
         Simulation simulation;
 
         // 1. RectangularMap Simulation
