@@ -30,6 +30,24 @@ class SimulationIT {
     }
 
     @Test
+    public void repeatedPositionsGiven() {
+        // given
+        var repeatedPosition = new Vector2d(2, 2);
+        ArrayList<Vector2d> positions = new ArrayList<>(
+                Collections.nCopies(5, repeatedPosition)
+        );
+        ArrayList<MoveDirection> moves = new ArrayList<>(
+                Collections.nCopies(4, MoveDirection.FORWARD)
+        );
+
+        // when
+        Simulation simulation = new Simulation(positions, moves, this.worldMap);
+
+        // then
+        Assertions.assertEquals(simulation.getAnimals().size(), 1);
+    }
+
+    @Test
     public void changeOrientationRight() {
         // given
         final Vector2d startPosition = new Vector2d(2, 2);
