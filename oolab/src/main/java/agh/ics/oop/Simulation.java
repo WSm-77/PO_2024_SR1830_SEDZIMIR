@@ -50,9 +50,6 @@ public class Simulation {
             return;
         }
 
-        // show map before movement
-        System.out.println(this.worldMap);
-
         // set iterator to first element
         var animalsIterator = this.animals.listIterator();
 
@@ -65,7 +62,6 @@ public class Simulation {
             Animal currentAnimal = animalsIterator.next();
 
             this.worldMap.move(currentAnimal, move);
-            System.out.println(this.worldMap);
         }
     }
 }

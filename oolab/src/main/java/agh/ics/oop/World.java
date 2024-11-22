@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.util.ConsoleMapDisplay;
 
 import java.util.List;
 
@@ -48,12 +49,15 @@ public class World {
         Simulation simulation;
 
         // 1. RectangularMap Simulation
-        WorldMap rectangularMap = new RectangularMap(4, 4);
+        var rectangularMap = new RectangularMap(4, 4);
+        MapChangeListener consoleLog = new ConsoleMapDisplay();
+        rectangularMap.subscribe(consoleLog);
         simulation = new Simulation(positions, directions, rectangularMap);
         simulation.run();
 
         // 2. GrassField Simulation
-        WorldMap grassField = new GrassField(10);
+        var grassField = new GrassField(10);
+        grassField.subscribe(consoleLog);
         simulation = new Simulation(positions, directions, grassField);
         simulation.run();
 
