@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OptionsParser {
-    public static final String ILLEGAL_MOVE_SUBMESSAGE = "is not legal move specification";
+    public static final String ILLEGAL_MOVE_MESSAGE_TEMPLATE = "%s is not legal move specification";
+
+    private static String createIllegalMoveMessage(String illegalOption) {
+        return String.format(OptionsParser.ILLEGAL_MOVE_MESSAGE_TEMPLATE, illegalOption);
+    }
 
     public static List<MoveDirection> parseStringArray (String[] options) {
         ArrayList<MoveDirection> directions = new ArrayList<>();
@@ -17,7 +21,7 @@ public class OptionsParser {
                 case "b", "backward" -> directions.add(MoveDirection.BACKWARD);
                 case "l", "left" -> directions.add(MoveDirection.LEFT);
                 case "r", "right" -> directions.add(MoveDirection.RIGHT);
-                default -> throw new IllegalArgumentException(String.format("%s %s", option, OptionsParser.ILLEGAL_MOVE_SUBMESSAGE));
+                default -> throw new IllegalArgumentException(OptionsParser.createIllegalMoveMessage(option));
             }
         }
 
