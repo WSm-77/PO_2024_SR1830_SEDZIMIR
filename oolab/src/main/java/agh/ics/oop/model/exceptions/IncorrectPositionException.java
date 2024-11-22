@@ -3,11 +3,13 @@ package agh.ics.oop.model.exceptions;
 import agh.ics.oop.model.Vector2d;
 
 public class IncorrectPositionException extends Exception {
-    public static final String EXCEPTION_SUBMESSAGE_1 = "Position";
-    public static final String EXCEPTION_SUBMESSAGE_2 = "is not correct";
+    public static final String EXCEPTION_MESSAGE_TEMPLATE = "Position %s is not correct";
+
+    private static String createExceptionMessage(Vector2d incorrectPosition) {
+        return String.format(IncorrectPositionException.EXCEPTION_MESSAGE_TEMPLATE, incorrectPosition.toString());
+    }
 
     public IncorrectPositionException(Vector2d position) {
-        super(String.format("%s %s %s", IncorrectPositionException.EXCEPTION_SUBMESSAGE_1,
-                position.toString(), IncorrectPositionException.EXCEPTION_SUBMESSAGE_2));
+        super(IncorrectPositionException.createExceptionMessage(position));
     }
 }
