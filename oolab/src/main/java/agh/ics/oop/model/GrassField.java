@@ -44,6 +44,12 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
+    public void move(Animal animal, MoveDirection direction) {
+        super.move(animal, direction);
+        this.updateBoundaries(animal.getPosition());
+    }
+
+    @Override
     public boolean isOccupied(Vector2d position) {
         return super.isOccupied((position)) || this.grassFields.containsKey(position);
     }

@@ -32,11 +32,7 @@ abstract public class AbstractWorldMap implements WorldMap {
         var currentAnimalPosition = animal.getPosition();
         if (!Objects.equals(prevAnimalPosition, currentAnimalPosition)) {
             this.animals.remove(prevAnimalPosition);
-            try {
-                this.place(animal);
-            } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-            }
+            this.animals.put(currentAnimalPosition, animal);
         }
     }
 
