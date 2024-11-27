@@ -46,20 +46,25 @@ public class World {
         // Simulation
         var repeatedPosition = new Vector2d(2, 2);
         List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
-        Simulation simulation;
 
         // 1. RectangularMap Simulation
         var rectangularMap = new RectangularMap(4, 4);
         MapChangeListener consoleLog = new ConsoleMapDisplay();
         rectangularMap.subscribe(consoleLog);
-        simulation = new Simulation(positions, directions, rectangularMap);
-        simulation.run();
+        var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
 
         // 2. GrassField Simulation
         var grassField = new GrassField(10);
         grassField.subscribe(consoleLog);
-        simulation = new Simulation(positions, directions, grassField);
-        simulation.run();
+        var grassFieldMapSimulation = new Simulation(positions, directions, grassField);
+
+        // Utilize Simulation Engine
+        var simulationEngine = new SimulationEngine(List.of(
+            rectangularMapSimulation,
+            grassFieldMapSimulation
+        ));
+
+        simulationEngine.runSync();
 
         // stop
         System.out.println("system zakończył działanie");
