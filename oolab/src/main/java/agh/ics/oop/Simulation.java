@@ -4,6 +4,7 @@ import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
+import agh.ics.oop.model.exceptions.IncorrectPositionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,13 @@ public class Simulation {
         List<Animal> animals = new ArrayList<>();
 
         for (var position : positions) {
-            animals.add(new Animal(position));
+            try {
+                var animal = new Animal(position);
+                this.worldMap.place(animal);
+                animals.add(animal);
+            } catch (IncorrectPositionException exception) {
+                System.out.println(exception.getMessage());
+            }
         }
 
         this.animals = animals;
@@ -43,14 +50,6 @@ public class Simulation {
             return;
         }
 
-        // place all animals at their starting position
-        for (var animal : this.animals) {
-            this.worldMap.place(animal);
-        }
-
-        // show map before movement
-        System.out.println(this.worldMap);
-
         // set iterator to first element
         var animalsIterator = this.animals.listIterator();
 
@@ -63,7 +62,6 @@ public class Simulation {
             Animal currentAnimal = animalsIterator.next();
 
             this.worldMap.move(currentAnimal, move);
-            System.out.println(this.worldMap);
         }
     }
 }

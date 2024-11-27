@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.exceptions.IncorrectPositionException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +14,10 @@ class RectangularMapIT {
         Animal animalToPlace = new Animal(positionToPlace);
 
         // when
-        boolean isPlaced = this.worldMap.place(animalToPlace);
-
         // then
-        Assertions.assertTrue(isPlaced);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalToPlace);
+        });
     }
 
     @Test
@@ -26,10 +27,10 @@ class RectangularMapIT {
         Animal animalToPlace = new Animal(offMapPosition);
 
         // when
-        boolean isPlaced = this.worldMap.place(animalToPlace);
-
         // then
-        Assertions.assertFalse(isPlaced);
+        Assertions.assertThrows(IncorrectPositionException.class, () -> {
+            this.worldMap.place(animalToPlace);
+        });
     }
 
     @Test
@@ -40,12 +41,13 @@ class RectangularMapIT {
         Animal animalToPlace = new Animal(occupiedPosition);
 
         // when
-        boolean isAnimalOnOccupiedPositionPlaced = this.worldMap.place(animalOnOccupiedPosition);
-        boolean isAnimalToPlacePlaced = this.worldMap.place(animalToPlace);
-
         // then
-        Assertions.assertTrue(isAnimalOnOccupiedPositionPlaced);
-        Assertions.assertFalse(isAnimalToPlacePlaced);
+        Assertions.assertDoesNotThrow(() -> {
+             this.worldMap.place(animalOnOccupiedPosition);
+        });
+        Assertions.assertThrows(IncorrectPositionException.class, () -> {
+            this.worldMap.place(animalToPlace);
+        });
     }
 
     @Test
@@ -67,7 +69,9 @@ class RectangularMapIT {
         Animal animal = new Animal(occupiedPositionOnMap);
 
         // when
-        this.worldMap.place(animal);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animal);
+        });
         boolean isOccupiedPositionOnMapOccupied = this.worldMap.isOccupied(occupiedPositionOnMap);
 
         // then
@@ -110,11 +114,12 @@ class RectangularMapIT {
         Animal animal = new Animal(positionOccupiedByAnimal);
 
         // when
-        boolean isPlaced = this.worldMap.place(animal);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animal);
+        });
         var animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal);
 
         // then
-        Assertions.assertTrue(isPlaced);
         Assertions.assertEquals(animal, animalAtGivenPosition);
     }
 
@@ -126,11 +131,12 @@ class RectangularMapIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(emptyPosition);
 
         // then
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertTrue(canAnimalBeMoved);
     }
 
@@ -143,13 +149,13 @@ class RectangularMapIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalAtOccupiedPositionPlaced = this.worldMap.place(animalAtOccupiedPosition);
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalAtOccupiedPosition);
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(occupiedPosition);
 
         // then
-        Assertions.assertTrue(isAnimalAtOccupiedPositionPlaced);
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertFalse(canAnimalBeMoved);
     }
 
@@ -161,11 +167,12 @@ class RectangularMapIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(outOfBoundsPosition);
 
         // then
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertFalse(canAnimalBeMoved);
     }
 }

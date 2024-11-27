@@ -1,14 +1,12 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.exceptions.IncorrectPositionException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GrassFieldIT {
     private final GrassField worldMap = new GrassField(10);
@@ -25,15 +23,13 @@ class GrassFieldIT {
         ));
 
         // when
-        List<Boolean> isPlaced = new ArrayList<>();
-        List<Boolean> expectedIsPlace = new ArrayList<>(Collections.nCopies(positionsToPlace.size(), true));
+        // then
         for (var positionToPlace : positionsToPlace) {
             Animal animalToPlace = new Animal(positionToPlace);
-            isPlaced.add(this.worldMap.place(animalToPlace));
+            Assertions.assertDoesNotThrow(() -> {
+                this.worldMap.place(animalToPlace);
+            });
         }
-
-        // then
-        Assertions.assertEquals(isPlaced, expectedIsPlace);
     }
 
     @Test
@@ -44,12 +40,13 @@ class GrassFieldIT {
         Animal animalToPlace = new Animal(occupiedPosition);
 
         // when
-        boolean isAnimalOnOccupiedPositionPlaced = this.worldMap.place(animalOnOccupiedPosition);
-        boolean isAnimalToPlacePlaced = this.worldMap.place(animalToPlace);
-
         // then
-        Assertions.assertTrue(isAnimalOnOccupiedPositionPlaced);
-        Assertions.assertFalse(isAnimalToPlacePlaced);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalOnOccupiedPosition);
+        });
+        Assertions.assertThrows(IncorrectPositionException.class, () -> {
+            this.worldMap.place(animalToPlace);
+        });
     }
 
     @Test
@@ -75,7 +72,9 @@ class GrassFieldIT {
         Animal animal = new Animal(occupiedPositionOnMap);
 
         // when
-        this.worldMap.place(animal);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animal);
+        });
         boolean isOccupiedPositionOnMapOccupied = this.worldMap.isOccupied(occupiedPositionOnMap);
 
         // then
@@ -133,11 +132,12 @@ class GrassFieldIT {
         Animal animal = new Animal(positionOccupiedByAnimal);
 
         // when
-        boolean isPlaced = this.worldMap.place(animal);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animal);
+        });
         var animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal);
 
         // then
-        Assertions.assertTrue(isPlaced);
         Assertions.assertEquals(animal, animalAtGivenPosition);
     }
 
@@ -149,11 +149,12 @@ class GrassFieldIT {
         Animal animal = new Animal(positionOccupiedByAnimalAndGrass);
 
         // when
-        boolean isPlaced = this.worldMap.place(animal);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animal);
+        });
         var objectAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimalAndGrass);
 
         // then
-        Assertions.assertTrue(isPlaced);
         Assertions.assertEquals(animal, objectAtGivenPosition);
         Assertions.assertNotEquals(grass, objectAtGivenPosition);
     }
@@ -166,11 +167,12 @@ class GrassFieldIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(emptyPosition);
 
         // then
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertTrue(canAnimalBeMoved);
     }
 
@@ -182,11 +184,12 @@ class GrassFieldIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(positionOccupiedByGrass);
 
         // then
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertTrue(canAnimalBeMoved);
     }
 
@@ -199,13 +202,13 @@ class GrassFieldIT {
         Animal animalToMove = new Animal(animalToMoveStartingPosition);
 
         // when
-        boolean isAnimalAtOccupiedPositionPlaced = this.worldMap.place(animalAtOccupiedPosition);
-        boolean isAnimalToMovePlaced = this.worldMap.place(animalToMove);
+        Assertions.assertDoesNotThrow(() -> {
+            this.worldMap.place(animalAtOccupiedPosition);
+            this.worldMap.place(animalToMove);
+        });
         boolean canAnimalBeMoved = this.worldMap.canMoveTo(occupiedPosition);
 
         // then
-        Assertions.assertTrue(isAnimalAtOccupiedPositionPlaced);
-        Assertions.assertTrue(isAnimalToMovePlaced);
         Assertions.assertFalse(canAnimalBeMoved);
     }
 }

@@ -1,17 +1,27 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.util.ConsoleMapDisplay;
 
 import java.util.List;
 
 public class World {
     private final static String PET_NAME = "WSm";
+    public final static int PARSER_ERROR = 1;
 
     public static void main(String[] args) {
         // start
         System.out.println("system wystartował");
 
-        List<MoveDirection> directions = OptionsParser.parseStringArray(args);
+        List<MoveDirection> directions = null;
+
+        try {
+            directions = OptionsParser.parseStringArray(args);
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+            System.exit(World.PARSER_ERROR);
+        }
+
         World.run(directions);
 
         // Vector2d verification
@@ -34,16 +44,20 @@ public class World {
         System.out.println(animalWSm.toString());
 
         // Simulation
-        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
+        var repeatedPosition = new Vector2d(2, 2);
+        List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
         Simulation simulation;
 
         // 1. RectangularMap Simulation
-        WorldMap rectangularMap = new RectangularMap(4, 4);
+        var rectangularMap = new RectangularMap(4, 4);
+        MapChangeListener consoleLog = new ConsoleMapDisplay();
+        rectangularMap.subscribe(consoleLog);
         simulation = new Simulation(positions, directions, rectangularMap);
         simulation.run();
 
         // 2. GrassField Simulation
-        WorldMap grassField = new GrassField(10);
+        var grassField = new GrassField(10);
+        grassField.subscribe(consoleLog);
         simulation = new Simulation(positions, directions, grassField);
         simulation.run();
 
