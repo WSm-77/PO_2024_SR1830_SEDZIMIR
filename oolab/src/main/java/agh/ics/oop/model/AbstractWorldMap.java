@@ -18,6 +18,11 @@ abstract public class AbstractWorldMap implements WorldMap {
     protected Vector2d mapLowerLeftBoundary = DEFAULT_POSITION;
     protected Vector2d mapUpperRightBoundary = DEFAULT_POSITION;
     private final List<MapChangeListener> subscribers = new ArrayList<>();
+    private final UUID id;
+
+    public AbstractWorldMap() {
+        this.id = UUID.randomUUID();
+    }
 
     private String createPlaceMessage(Animal animal) {
         return String.format(AbstractWorldMap.PLACE_MESSAGE_TEMPLATE, animal.toString(), animal.getPosition().toString());
@@ -101,6 +106,11 @@ abstract public class AbstractWorldMap implements WorldMap {
     @Override
     public Boundary getCurrentBounds() {
         return new Boundary(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
     }
 
     @Override
