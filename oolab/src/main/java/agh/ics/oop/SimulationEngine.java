@@ -5,6 +5,7 @@ import java.util.List;
 
 public class SimulationEngine {
     private final List<Simulation> simulationList;
+    private final List<Thread> simulationThreadList = new ArrayList<>();
 
     public SimulationEngine(List<Simulation> simulationList) {
         this.simulationList = simulationList;
@@ -17,11 +18,16 @@ public class SimulationEngine {
     }
 
     public void runAsync() throws InterruptedException {
-        List<Thread> simulationThreadList = new ArrayList<>();
         for (var simulation : this.simulationList) {
             var simulationThread = new Thread(simulation);
-            simulationThreadList.add(simulationThread);
+            this.simulationThreadList.add(simulationThread);
             simulationThread.start();
+        }
+    }
+
+    public void awaitSimulationsEnd() throws InterruptedException {
+        for (var simulationThread : this.simulationThreadList) {
+            simulationThread.join();
         }
     }
 }

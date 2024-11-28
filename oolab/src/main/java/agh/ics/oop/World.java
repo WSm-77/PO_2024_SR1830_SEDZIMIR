@@ -67,6 +67,7 @@ public class World {
         // simulationEngine.runSync();
         try {
             simulationEngine.runAsync();
+            simulationEngine.awaitSimulationsEnd();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
