@@ -57,6 +57,9 @@ abstract public class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
+        // allow subclasses to perform additional actions
+        this.preMove(animal, direction);
+
         var prevAnimalPosition = animal.getPosition();
         var prevAnimalOrientation = animal.getOrientation();
         animal.move(direction, this);
@@ -79,7 +82,18 @@ abstract public class AbstractWorldMap implements WorldMap {
             message = this.createNoPositionChangeMessage(animal, direction);
         }
 
+        // allow subclasses to perform additional actions
+        this.postMove(animal, direction);
+
         this.mapChanged(message);
+    }
+
+    protected void preMove(Animal animal, MoveDirection direction) {
+        // space for subclasses to add logic before moving animal
+    }
+
+    protected void postMove(Animal animal, MoveDirection direction) {
+        // space for subclasses to add logic after moving animal
     }
 
     @Override
