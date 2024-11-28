@@ -3,6 +3,7 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class World {
@@ -64,10 +65,39 @@ public class World {
             grassFieldMapSimulation
         ));
 
-        // simulationEngine.runSync();
+        // //  simulationEngine.runSync();
+        // try {
+        //     simulationEngine.runAsync();
+        //     simulationEngine.awaitSimulationsEnd();
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+
+        // run a lot of simulations
+        int totalNumberOfSimulations = 1000;
+        int numberOfRectangularMapSimulations = totalNumberOfSimulations / 2;
+        int numberOfGrassFieldSimulations = totalNumberOfSimulations - numberOfRectangularMapSimulations;
+        List<Simulation> vastNumberOfSimulationsList = new ArrayList<>();
+
+        for (int i = 0; i < numberOfRectangularMapSimulations; i++) {
+            var testRectangularMap = new RectangularMap(4, 4);
+            var testRectangularMapSimulation = new Simulation(positions, directions, testRectangularMap);
+            testRectangularMap.subscribe(consoleLog);
+            vastNumberOfSimulationsList.add(testRectangularMapSimulation);
+        }
+
+        for (int i = 0; i < numberOfGrassFieldSimulations; i++) {
+            var testGrassField = new GrassField(10);
+            var testGrassFieldSimulation = new Simulation(positions, directions, testGrassField);
+            testGrassField.subscribe(consoleLog);
+            vastNumberOfSimulationsList.add(testGrassFieldSimulation);
+        }
+
+        var vastNumberOfSimulationsEngine = new SimulationEngine(vastNumberOfSimulationsList);
+
         try {
-            simulationEngine.runAsync();
-            simulationEngine.awaitSimulationsEnd();
+            vastNumberOfSimulationsEngine.runAsync();
+            vastNumberOfSimulationsEngine.awaitSimulationsEnd();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
