@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationEngine {
@@ -10,8 +11,17 @@ public class SimulationEngine {
     }
 
     public void runSync() {
-        for (var simulation : simulationList) {
+        for (var simulation : this.simulationList) {
             simulation.run();
+        }
+    }
+
+    public void runAsync() throws InterruptedException {
+        List<Thread> simulationThreadList = new ArrayList<>();
+        for (var simulation : this.simulationList) {
+            var simulationThread = new Thread(simulation);
+            simulationThreadList.add(simulationThread);
+            simulationThread.start();
         }
     }
 }

@@ -64,7 +64,12 @@ public class World {
             grassFieldMapSimulation
         ));
 
-        simulationEngine.runSync();
+        // simulationEngine.runSync();
+        try {
+            simulationEngine.runAsync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // stop
         System.out.println("system zakończył działanie");
