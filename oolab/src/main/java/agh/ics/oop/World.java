@@ -3,7 +3,11 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class World {
     private final static String PET_NAME = "WSm";
@@ -46,20 +50,72 @@ public class World {
         // Simulation
         var repeatedPosition = new Vector2d(2, 2);
         List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
-        Simulation simulation;
 
         // 1. RectangularMap Simulation
         var rectangularMap = new RectangularMap(4, 4);
         MapChangeListener consoleLog = new ConsoleMapDisplay();
         rectangularMap.subscribe(consoleLog);
-        simulation = new Simulation(positions, directions, rectangularMap);
-        simulation.run();
+        var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
 
         // 2. GrassField Simulation
         var grassField = new GrassField(10);
         grassField.subscribe(consoleLog);
-        simulation = new Simulation(positions, directions, grassField);
-        simulation.run();
+        var grassFieldMapSimulation = new Simulation(positions, directions, grassField);
+
+        // Utilize Simulation Engine
+        var simulationEngine = new SimulationEngine(List.of(
+            rectangularMapSimulation,
+            grassFieldMapSimulation
+        ));
+
+        // synchronous run test
+        // simulationEngine.runSync();
+
+        // asynchronous run test
+        try {
+            simulationEngine.runAsync();
+            simulationEngine.awaitSimulationsEnd();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // run a lot of simulations
+        int totalNumberOfSimulations = 1000;
+        int numberOfRectangularMapSimulations = totalNumberOfSimulations / 2;
+        int numberOfGrassFieldSimulations = totalNumberOfSimulations - numberOfRectangularMapSimulations;
+        List<Simulation> vastNumberOfSimulationsList = new ArrayList<>();
+
+        for (int i = 0; i < numberOfRectangularMapSimulations; i++) {
+            var testRectangularMap = new RectangularMap(4, 4);
+            var testRectangularMapSimulation = new Simulation(positions, directions, testRectangularMap);
+            testRectangularMap.subscribe(consoleLog);
+            vastNumberOfSimulationsList.add(testRectangularMapSimulation);
+        }
+
+        for (int i = 0; i < numberOfGrassFieldSimulations; i++) {
+            var testGrassField = new GrassField(10);
+            var testGrassFieldSimulation = new Simulation(positions, directions, testGrassField);
+            testGrassField.subscribe(consoleLog);
+            vastNumberOfSimulationsList.add(testGrassFieldSimulation);
+        }
+
+        var vastNumberOfSimulationsEngine = new SimulationEngine(vastNumberOfSimulationsList);
+
+        Instant start = Instant.now();
+
+        try {
+            vastNumberOfSimulationsEngine.runAsyncInThreadPool();
+            vastNumberOfSimulationsEngine.awaitSimulationsEnd();
+        } catch (InterruptedException e) {
+            System.out.println("Execution interruped!!!");
+            e.printStackTrace();
+        }
+
+        Instant end = Instant.now();
+
+        long timeElapsed = Duration.between(start, end).toMillis();
+
+        System.out.println(String.format("Time elapsed = %d [s]", timeElapsed));
 
         // stop
         System.out.println("system zakończył działanie");

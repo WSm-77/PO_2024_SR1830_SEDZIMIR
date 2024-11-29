@@ -44,8 +44,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public void move(Animal animal, MoveDirection direction) {
-        super.move(animal, direction);
+    protected void postMove(Animal animal, MoveDirection direction) {
         this.updateBoundaries(animal.getPosition());
     }
 
