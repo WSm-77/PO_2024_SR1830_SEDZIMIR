@@ -3,8 +3,11 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class World {
     private final static String PET_NAME = "WSm";
@@ -65,13 +68,16 @@ public class World {
             grassFieldMapSimulation
         ));
 
-        // //  simulationEngine.runSync();
-        // try {
-        //     simulationEngine.runAsync();
-        //     simulationEngine.awaitSimulationsEnd();
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
+        // synchronous run test
+        // simulationEngine.runSync();
+
+        // asynchronous run test
+        try {
+            simulationEngine.runAsync();
+            simulationEngine.awaitSimulationsEnd();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // run a lot of simulations
         int totalNumberOfSimulations = 1000;
@@ -95,14 +101,21 @@ public class World {
 
         var vastNumberOfSimulationsEngine = new SimulationEngine(vastNumberOfSimulationsList);
 
-        // try {
-        //     vastNumberOfSimulationsEngine.runAsync();
-        //     vastNumberOfSimulationsEngine.awaitSimulationsEnd();
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
+        Instant start = Instant.now();
 
-        vastNumberOfSimulationsEngine.runAsyncInThreadPool();
+        try {
+            vastNumberOfSimulationsEngine.runAsyncInThreadPool();
+            vastNumberOfSimulationsEngine.awaitSimulationsEnd();
+        } catch (InterruptedException e) {
+            System.out.println("Execution interruped!!!");
+            e.printStackTrace();
+        }
+
+        Instant end = Instant.now();
+
+        long timeElapsed = Duration.between(start, end).toMillis();
+
+        System.out.println(String.format("Time elapsed = %d [s]", timeElapsed));
 
         // stop
         System.out.println("system zakończył działanie");
