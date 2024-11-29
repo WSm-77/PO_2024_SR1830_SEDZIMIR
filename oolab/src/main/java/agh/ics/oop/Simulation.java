@@ -13,7 +13,7 @@ public class Simulation implements Runnable {
     private final List<Animal> animals;
     private final List<MoveDirection> moves;
     private final WorldMap worldMap;
-    public static final String INTERRUPTION_MESSAGE_TEMPLATE = "Simulation of map %s interrupted!!!";
+    public static final String INTERRUPTION_MESSAGE_TEMPLATE = "Simulation of map %s interrupted!!!\n";
 
     public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap worldMap) {
         this.worldMap = worldMap;
@@ -46,6 +46,10 @@ public class Simulation implements Runnable {
         return this.worldMap;
     }
 
+    private String createTimeoutReachedMessage() {
+        return String.format(Simulation.INTERRUPTION_MESSAGE_TEMPLATE, this.worldMap.getId());
+    }
+
     @Override
     public void run() {
         if (this.animals.isEmpty()){
@@ -58,7 +62,7 @@ public class Simulation implements Runnable {
         for (var move : this.moves) {
             // stop execution if thread was interrupted
             if (Thread.currentThread().isInterrupted()) {
-                System.out.println(String.format(Simulation.INTERRUPTION_MESSAGE_TEMPLATE, this.worldMap.getId()));
+                System.out.println(this.createTimeoutReachedMessage());
                 return;
             }
 
