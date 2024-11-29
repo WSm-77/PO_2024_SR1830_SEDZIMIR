@@ -95,12 +95,14 @@ public class World {
 
         var vastNumberOfSimulationsEngine = new SimulationEngine(vastNumberOfSimulationsList);
 
-        try {
-            vastNumberOfSimulationsEngine.runAsync();
-            vastNumberOfSimulationsEngine.awaitSimulationsEnd();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     vastNumberOfSimulationsEngine.runAsync();
+        //     vastNumberOfSimulationsEngine.awaitSimulationsEnd();
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+
+        vastNumberOfSimulationsEngine.runAsyncInThreadPool();
 
         // stop
         System.out.println("system zakończył działanie");
