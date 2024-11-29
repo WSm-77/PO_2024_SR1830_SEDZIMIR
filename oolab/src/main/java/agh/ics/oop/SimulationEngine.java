@@ -38,7 +38,11 @@ public class SimulationEngine {
             simulationThread.join();
         }
 
-        if (this.simulationsThreadPool.isShutdown() && !this.simulationsThreadPool.awaitTermination(
+        // check if thread pool was used to run tasks
+        if (!this.simulationsThreadPool.isShutdown())
+            return;
+
+        if (!this.simulationsThreadPool.awaitTermination(
                 SimulationEngine.THREAD_POOL_TERMINATION_TIMEOUT_S, TimeUnit.SECONDS)) {
             System.out.println(SimulationEngine.TIMEOUT_REACHED_MESSAGE);
             this.simulationsThreadPool.shutdownNow();
