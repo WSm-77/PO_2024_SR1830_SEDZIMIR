@@ -18,6 +18,11 @@ abstract public class AbstractWorldMap implements WorldMap {
     protected Vector2d mapLowerLeftBoundary = DEFAULT_POSITION;
     protected Vector2d mapUpperRightBoundary = DEFAULT_POSITION;
     private final List<MapChangeListener> subscribers = new ArrayList<>();
+    private final UUID id;
+
+    public AbstractWorldMap() {
+        this.id = UUID.randomUUID();
+    }
 
     private String createPlaceMessage(Animal animal) {
         return String.format(AbstractWorldMap.PLACE_MESSAGE_TEMPLATE, animal.toString(), animal.getPosition().toString());
@@ -52,6 +57,9 @@ abstract public class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
+        // allow subclasses to perform additional actions
+        this.preMove(animal, direction);
+
         var prevAnimalPosition = animal.getPosition();
         var prevAnimalOrientation = animal.getOrientation();
         animal.move(direction, this);
@@ -74,7 +82,18 @@ abstract public class AbstractWorldMap implements WorldMap {
             message = this.createNoPositionChangeMessage(animal, direction);
         }
 
+        // allow subclasses to perform additional actions
+        this.postMove(animal, direction);
+
         this.mapChanged(message);
+    }
+
+    protected void preMove(Animal animal, MoveDirection direction) {
+        // space for subclasses to add logic before moving animal
+    }
+
+    protected void postMove(Animal animal, MoveDirection direction) {
+        // space for subclasses to add logic after moving animal
     }
 
     @Override
@@ -101,6 +120,11 @@ abstract public class AbstractWorldMap implements WorldMap {
     @Override
     public Boundary getCurrentBounds() {
         return new Boundary(this.mapLowerLeftBoundary, this.mapUpperRightBoundary);
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
     }
 
     @Override

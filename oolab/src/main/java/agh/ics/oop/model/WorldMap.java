@@ -5,6 +5,7 @@ import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.exceptions.IncorrectPositionException;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The interface responsible for interacting with the map of the world.
@@ -58,4 +59,11 @@ public interface WorldMap extends MoveValidator {
      * @return Boundary object representing map boundaries.
      */
     Boundary getCurrentBounds();
+
+    /**
+     * Return object's UUID
+     *
+     * @return object's UUID
+     */
+    UUID getId();
 }
