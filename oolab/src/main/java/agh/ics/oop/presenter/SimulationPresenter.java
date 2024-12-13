@@ -19,6 +19,9 @@ public class SimulationPresenter implements MapChangeListener {
     public static final String NO_MOVES_PROVIDED_ALERT_TITLE = "No moves provided";
     public static final String NO_MOVES_PROVIDED_ALERT_MESSAGE = "Please enter animal moves";
     public static final String ILLEGAL_ARGUMENT_ALERT_TITLE = "Illegal argument alert";
+    public static final Vector2d ANIMAL1_STARTING_POSITION = new Vector2d(2, 2);
+    public static final Vector2d ANIMAL2_STARTING_POSITION = new Vector2d(3, 4);
+    public static final int TOTAL_GRASS_ON_GRASS_FIELD_MAP = 10;
 
     @FXML
     private TextField movesTextEntry;
@@ -66,20 +69,28 @@ public class SimulationPresenter implements MapChangeListener {
         }
 
         // Simulation
-        var repeatedPosition = new Vector2d(2, 2);
-        List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
+        List<Vector2d> positions = List.of(
+                SimulationPresenter.ANIMAL1_STARTING_POSITION,
+                SimulationPresenter.ANIMAL2_STARTING_POSITION
+        );
 
         MapChangeListener consoleLog = new ConsoleMapDisplay();
 
         // 1. RectangularMap Simulation
-        var rectangularMap = new RectangularMap(4, 4);
+        // var rectangularMap = new RectangularMap(4, 4);
+        // rectangularMap.subscribe(consoleLog);
+        // rectangularMap.subscribe(this);
+        // this.setWorldMap(rectangularMap);
+        // var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
 
-        rectangularMap.subscribe(consoleLog);
-        rectangularMap.subscribe(this);
-        this.setWorldMap(rectangularMap);
+        // 2. GrassField Simulation
+        var grassField = new GrassField(SimulationPresenter.TOTAL_GRASS_ON_GRASS_FIELD_MAP);
+        grassField.subscribe(consoleLog);
+        grassField.subscribe(this);
+        this.setWorldMap(grassField);
+        var grassFieldMapSimulation = new Simulation(positions, directions, grassField);
 
-        var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
-        var simulationEngine = new SimulationEngine(List.of(rectangularMapSimulation));
+        var simulationEngine = new SimulationEngine(List.of(grassFieldMapSimulation));
 
         simulationEngine.runAsync();
     }
