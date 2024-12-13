@@ -53,21 +53,51 @@ public class SimulationPresenter implements MapChangeListener {
 
         var upperLeft = new Vector2d(boundaries.lowerLeft().getX(), boundaries.upperRight().getY());
 
-        int gridRowCnt = boundaries.upperRight().getY() - boundaries.lowerLeft().getY();
-        int gridColumnCnt = boundaries.upperRight().getX() - boundaries.lowerLeft().getX();
+        int mapRowsCnt = boundaries.upperRight().getY() - boundaries.lowerLeft().getY() + 1;
+        int mapColumnsCnt = boundaries.upperRight().getX() - boundaries.lowerLeft().getX() + 1;
 
-        this.setGridCellsSize(gridRowCnt, gridColumnCnt);
-
-        this.fillGridCells(gridRowCnt, gridColumnCnt, upperLeft);
+        this.setGridCellsSize(mapRowsCnt + 1, mapColumnsCnt + 1);
+        this.addRowsAndColumnsHeaders(mapRowsCnt, mapColumnsCnt, upperLeft);
+        this.fillGridCells(mapRowsCnt, mapColumnsCnt, upperLeft);
     }
 
+
     private void setGridCellsSize(int rows, int columns) {
+        double maxHeight = this.mapGrid.getMaxHeight();
+        double maxWidth = this.mapGrid.getMaxWidth();
+
+        double cellHeight = maxHeight / rows;
+        double cellWidth = maxWidth / columns;
+
         for (int i = 0; i < rows; i++){
-            mapGrid.getRowConstraints().add(new RowConstraints(CELL_HEIGHT));
+            mapGrid.getRowConstraints().add(new RowConstraints(cellHeight));
         }
 
         for (int i = 0; i < columns; i++){
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
+            mapGrid.getColumnConstraints().add(new ColumnConstraints(cellWidth));
+        }
+    }
+
+    private void addRowsAndColumnsHeaders(int mapRows, int mapColumns, Vector2d upperLeft) {
+        var coordinatesDescription = new Label("y\\x");
+        this.mapGrid.add(coordinatesDescription, 0, 0);
+        GridPane.setHalignment(coordinatesDescription, HPos.CENTER);
+        GridPane.setValignment(coordinatesDescription, VPos.CENTER);
+
+        // fill x coordinate header
+        for (int row = 0; row < mapRows; row++){
+            var field = new Label(String.format("%d", upperLeft.getY() - row));
+            this.mapGrid.add(field, 0, row + 1);
+            GridPane.setHalignment(field, HPos.CENTER);
+            GridPane.setValignment(field, VPos.CENTER);
+        }
+
+        // fill y coordinate header
+        for (int column = 0; column < mapColumns; column++){
+            var field = new Label(String.format("%d", upperLeft.getX() + column));
+            this.mapGrid.add(field,column + 1, 0);
+            GridPane.setHalignment(field, HPos.CENTER);
+            GridPane.setValignment(field, VPos.CENTER);
         }
     }
 
@@ -77,9 +107,8 @@ public class SimulationPresenter implements MapChangeListener {
                 var mapPosition = upperLeft.add(new Vector2d(gridColumn, -gridRow));
                 Label field = new Label();
                 field.setText(this.worldMap.isOccupied(mapPosition) ? this.worldMap.objectAt(mapPosition).toString() : " ");
-                this.mapGrid.add(field,  gridColumn, gridRow, 1, 1);
+                this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
 
-                // Set horizontal and vertical alignment to center
                 GridPane.setHalignment(field, HPos.CENTER);
                 GridPane.setValignment(field, VPos.CENTER);
             }

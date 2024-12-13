@@ -18,8 +18,7 @@
         </VBox>
     </top>
     <center>
-        <Label fx:id="infoLabel" text="All animals will be living here!" textAlignment="CENTER"/>
-        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="center"/>
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" maxHeight="400" maxWidth="750" alignment="center"/>
     </center>
     <bottom>
         <HBox>
