@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="550.0" minWidth="850.0" stylesheets="style.css"
@@ -18,6 +19,7 @@
     </top>
     <center>
         <Label fx:id="infoLabel" text="All animals will be living here!" textAlignment="CENTER"/>
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="center"/>
     </center>
     <bottom>
         <HBox>
