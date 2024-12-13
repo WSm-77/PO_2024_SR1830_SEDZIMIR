@@ -24,11 +24,11 @@ public class SimulationPresenter implements MapChangeListener {
     public static final String NO_MOVES_PROVIDED_ALERT_TITLE = "No moves provided";
     public static final String NO_MOVES_PROVIDED_ALERT_MESSAGE = "Please enter animal moves";
     public static final String ILLEGAL_ARGUMENT_ALERT_TITLE = "Illegal argument alert";
+    public static final String MOVE_ARGUMENTS_SEPARATOR = " ";
+    public static final String EMPTY_CELL_STRING_REPRESENTATION = "";
     public static final Vector2d ANIMAL1_STARTING_POSITION = new Vector2d(2, 2);
     public static final Vector2d ANIMAL2_STARTING_POSITION = new Vector2d(3, 4);
     public static final int TOTAL_GRASS_ON_GRASS_FIELD_MAP = 10;
-    public static final int CELL_WIDTH = 48;
-    public static final int CELL_HEIGHT = 48;
 
     private WorldMap worldMap;
 
@@ -86,7 +86,7 @@ public class SimulationPresenter implements MapChangeListener {
 
         // fill x coordinate header
         for (int row = 0; row < mapRows; row++){
-            var field = new Label(String.format("%d", upperLeft.getY() - row));
+            var field = new Label(String.valueOf(upperLeft.getY() - row));
             this.mapGrid.add(field, 0, row + 1);
             GridPane.setHalignment(field, HPos.CENTER);
             GridPane.setValignment(field, VPos.CENTER);
@@ -94,7 +94,7 @@ public class SimulationPresenter implements MapChangeListener {
 
         // fill y coordinate header
         for (int column = 0; column < mapColumns; column++){
-            var field = new Label(String.format("%d", upperLeft.getX() + column));
+            var field = new Label(String.valueOf(upperLeft.getX() + column));
             this.mapGrid.add(field,column + 1, 0);
             GridPane.setHalignment(field, HPos.CENTER);
             GridPane.setValignment(field, VPos.CENTER);
@@ -106,7 +106,8 @@ public class SimulationPresenter implements MapChangeListener {
             for (int gridColumn = 0; gridColumn < gridColumnCnt; gridColumn++) {
                 var mapPosition = upperLeft.add(new Vector2d(gridColumn, -gridRow));
                 Label field = new Label();
-                field.setText(this.worldMap.isOccupied(mapPosition) ? this.worldMap.objectAt(mapPosition).toString() : " ");
+                field.setText(this.worldMap.isOccupied(mapPosition) ? this.worldMap.objectAt(mapPosition).toString()
+                        : SimulationPresenter.EMPTY_CELL_STRING_REPRESENTATION);
                 this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
 
                 GridPane.setHalignment(field, HPos.CENTER);
@@ -143,7 +144,7 @@ public class SimulationPresenter implements MapChangeListener {
         }
 
         try {
-            directions = OptionsParser.parseStringArray(movesString.split(" "));
+            directions = OptionsParser.parseStringArray(movesString.split(SimulationPresenter.MOVE_ARGUMENTS_SEPARATOR));
         } catch (IllegalArgumentException exception) {
             this.showIllegalArgumentsAlert(exception.getMessage());
             return;
@@ -157,14 +158,7 @@ public class SimulationPresenter implements MapChangeListener {
 
         MapChangeListener consoleLog = new ConsoleMapDisplay();
 
-        // 1. RectangularMap Simulation
-        // var rectangularMap = new RectangularMap(4, 4);
-        // rectangularMap.subscribe(consoleLog);
-        // rectangularMap.subscribe(this);
-        // this.setWorldMap(rectangularMap);
-        // var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
-
-        // 2. GrassField Simulation
+        // GrassField Simulation
         var grassField = new GrassField(SimulationPresenter.TOTAL_GRASS_ON_GRASS_FIELD_MAP);
         grassField.subscribe(consoleLog);
         grassField.subscribe(this);
