@@ -25,6 +25,7 @@ public class SimulationPresenter implements MapChangeListener {
     public static final String NO_MOVES_PROVIDED_ALERT_MESSAGE = "Please enter animal moves";
     public static final String ILLEGAL_ARGUMENT_ALERT_TITLE = "Illegal argument alert";
     public static final String MOVE_ARGUMENTS_SEPARATOR = " ";
+    public static final String AXIS_DESCRIPTION_STRING = "y \\ x";
     public static final String EMPTY_CELL_STRING_REPRESENTATION = "";
     public static final Vector2d ANIMAL1_STARTING_POSITION = new Vector2d(2, 2);
     public static final Vector2d ANIMAL2_STARTING_POSITION = new Vector2d(3, 4);
@@ -79,10 +80,10 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void addRowsAndColumnsHeaders(int mapRows, int mapColumns, Vector2d upperLeft) {
-        var coordinatesDescription = new Label("y\\x");
-        this.mapGrid.add(coordinatesDescription, 0, 0);
-        GridPane.setHalignment(coordinatesDescription, HPos.CENTER);
-        GridPane.setValignment(coordinatesDescription, VPos.CENTER);
+        var axisDescription = new Label(SimulationPresenter.AXIS_DESCRIPTION_STRING);
+        this.mapGrid.add(axisDescription, 0, 0);
+        GridPane.setHalignment(axisDescription, HPos.CENTER);
+        GridPane.setValignment(axisDescription, VPos.CENTER);
 
         // fill x coordinate header
         for (int row = 0; row < mapRows; row++){
