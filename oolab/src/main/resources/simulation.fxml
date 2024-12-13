@@ -12,7 +12,7 @@
             fx:controller="agh.ics.oop.presenter.SimulationPresenter">
     <top>
         <VBox>
-            <TextField fx:id="movesTextEntry" promptText="Enter animal moves" styleClass="material-text-field"/>
+            <TextField fx:id="movesTextEntry" promptText="Enter space separated animal moves" styleClass="material-text-field"/>
             <Label fx:id="moveInfoLabel"/>
         </VBox>
     </top>
@@ -21,7 +21,7 @@
     </center>
     <bottom>
         <HBox>
-            <Button fx:id="startButton" text="Start"/>
+            <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
         </HBox>
     </bottom>
 </BorderPane>
