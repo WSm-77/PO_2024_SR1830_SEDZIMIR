@@ -1,0 +1,37 @@
+.button {
+    -fx-pref-width: 128;
+    -fx-pref-height: 32;
+}
+
+HBox {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+
+VBox {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+
+.material-text-field {
+    -fx-min-height: 32px;
+    -fx-max-height: 64px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #009688 transparent;
+    -fx-border-width: 2;
+    -fx-padding: 8;
+}
+
+.material-text-field:focused {
+    -fx-border-color: #00796b; /* Change color on focus */
+    -fx-border-radius: 10;
+}
+
+.material-text-field:readonly {
+    -fx-opacity: 0.6; /* Dimmed appearance for readonly */
+}
+
+.material-text-field:hover {
+    -fx-border-color: #00796b;     /* Border color on hover */
+    -fx-border-radius: 10;
+}
