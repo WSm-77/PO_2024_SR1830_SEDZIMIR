@@ -2,8 +2,10 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.OptionsParser;
 import agh.ics.oop.Simulation;
+import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -43,7 +45,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     @Override
     public void mapChanged(WorldMap worldMap, String message) {
-        this.drawMap(message);
+        Platform.runLater(() -> this.drawMap(message));
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
@@ -77,8 +79,9 @@ public class SimulationPresenter implements MapChangeListener {
         this.setWorldMap(rectangularMap);
 
         var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
+        var simulationEngine = new SimulationEngine(List.of(rectangularMapSimulation));
 
-        rectangularMapSimulation.run();
+        simulationEngine.runAsync();
     }
 
     private void showNoMovesProvidedAlert() {

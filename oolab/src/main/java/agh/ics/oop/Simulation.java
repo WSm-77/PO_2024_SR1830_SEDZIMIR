@@ -14,6 +14,7 @@ public class Simulation implements Runnable {
     private final List<MoveDirection> moves;
     private final WorldMap worldMap;
     public static final String INTERRUPTION_MESSAGE_TEMPLATE = "Simulation of map %s interrupted!!!\n";
+    public static final int SIMULATION_REFRESH_TIME_MS = 500;
 
     public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap worldMap) {
         this.worldMap = worldMap;
@@ -64,6 +65,12 @@ public class Simulation implements Runnable {
             if (Thread.currentThread().isInterrupted()) {
                 System.out.println(this.createTimeoutReachedMessage());
                 return;
+            }
+
+            try {
+                Thread.sleep(Simulation.SIMULATION_REFRESH_TIME_MS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
             // check if we reached end of animals list
