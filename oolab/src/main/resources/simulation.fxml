@@ -13,6 +13,7 @@
     <top>
         <VBox>
             <TextField fx:id="movesTextEntry" promptText="Enter animal moves" styleClass="material-text-field"/>
+            <Label fx:id="moveInfoLabel"/>
         </VBox>
     </top>
     <center>

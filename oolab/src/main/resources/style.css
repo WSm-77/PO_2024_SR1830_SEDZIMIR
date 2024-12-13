@@ -8,6 +8,11 @@ HBox {
     -fx-spacing: 8;
 }
 
+VBox {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+
 .material-text-field {
     -fx-min-height: 32px;
     -fx-max-height: 64px;

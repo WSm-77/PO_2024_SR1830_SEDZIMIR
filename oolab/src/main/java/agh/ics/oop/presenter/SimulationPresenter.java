@@ -12,6 +12,9 @@ public class SimulationPresenter implements MapChangeListener {
     private TextField movesTextEntry;
 
     @FXML
+    private Label moveInfoLabel;
+
+    @FXML
     private Button startButton;
 
     @FXML
@@ -20,7 +23,7 @@ public class SimulationPresenter implements MapChangeListener {
     private WorldMap worldMap;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         startButton.setOnAction(actionEvent -> {
             // TODO
         });
@@ -30,13 +33,14 @@ public class SimulationPresenter implements MapChangeListener {
         this.worldMap = map;
     }
 
-    public void drawMap() {
+    public void drawMap(String message) {
+        moveInfoLabel.setText(message);
         infoLabel.setText(worldMap.toString());
     }
 
     @Override
     public void mapChanged(WorldMap worldMap, String message) {
         System.out.println("MapChange!!!!");
-        this.drawMap();
+        this.drawMap(message);
     }
 }
