@@ -3,9 +3,11 @@ package agh.ics.oop;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
@@ -47,6 +49,16 @@ public class World {
         System.out.println("status zwierzaka:");
         System.out.println(animalWSm.toString());
 
+        // create MapChangeListener with lambda expression
+        MapChangeListener dateAndTimeMapLogger = (WorldMap worldMap, String message) -> {
+            final String dateFormatTemplate = "yyyy-mm-dd hh:mm:ss";
+            final String mapChangeWithDateAndTimeMessageTemplate = "%s %s";
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatTemplate);
+            String formattedDate = dateFormat.format(currentDate);
+            System.out.println(String.format(mapChangeWithDateAndTimeMessageTemplate, formattedDate, message));
+        };
+
         // Simulation
         var repeatedPosition = new Vector2d(2, 2);
         List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
@@ -54,11 +66,13 @@ public class World {
         // 1. RectangularMap Simulation
         var rectangularMap = new RectangularMap(4, 4);
         MapChangeListener consoleLog = new ConsoleMapDisplay();
+        rectangularMap.subscribe(dateAndTimeMapLogger);
         rectangularMap.subscribe(consoleLog);
         var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
 
         // 2. GrassField Simulation
         var grassField = new GrassField(10);
+        grassField.subscribe(dateAndTimeMapLogger);;
         grassField.subscribe(consoleLog);
         var grassFieldMapSimulation = new Simulation(positions, directions, grassField);
 
@@ -88,6 +102,7 @@ public class World {
         for (int i = 0; i < numberOfRectangularMapSimulations; i++) {
             var testRectangularMap = new RectangularMap(4, 4);
             var testRectangularMapSimulation = new Simulation(positions, directions, testRectangularMap);
+            testRectangularMap.subscribe(dateAndTimeMapLogger);
             testRectangularMap.subscribe(consoleLog);
             vastNumberOfSimulationsList.add(testRectangularMapSimulation);
         }
@@ -95,6 +110,7 @@ public class World {
         for (int i = 0; i < numberOfGrassFieldSimulations; i++) {
             var testGrassField = new GrassField(10);
             var testGrassFieldSimulation = new Simulation(positions, directions, testGrassField);
+            testGrassField.subscribe(dateAndTimeMapLogger);
             testGrassField.subscribe(consoleLog);
             vastNumberOfSimulationsList.add(testGrassFieldSimulation);
         }

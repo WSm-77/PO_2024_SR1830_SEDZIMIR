@@ -18,6 +18,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
@@ -159,8 +161,19 @@ public class SimulationPresenter implements MapChangeListener {
 
         MapChangeListener consoleLog = new ConsoleMapDisplay();
 
+        // create MapChangeListener with lambda expression
+        MapChangeListener dateAndTimeMapLogger = (WorldMap worldMap, String message) -> {
+            final String dateFormatTemplate = "yyyy-mm-dd hh:mm:ss";
+            final String mapChangeWithDateAndTimeMessageTemplate = "%s %s";
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatTemplate);
+            String formattedDate = dateFormat.format(currentDate);
+            System.out.println(String.format(mapChangeWithDateAndTimeMessageTemplate, formattedDate, message));
+        };
+
         // GrassField Simulation
         var grassField = new GrassField(SimulationPresenter.TOTAL_GRASS_ON_GRASS_FIELD_MAP);
+        grassField.subscribe(dateAndTimeMapLogger);
         grassField.subscribe(consoleLog);
         grassField.subscribe(this);
         this.setWorldMap(grassField);
