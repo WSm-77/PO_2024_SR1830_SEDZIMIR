@@ -128,6 +128,18 @@ abstract public class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public Collection<Animal> getOrderedAnimals() {
+        List<Animal> animalsList = new ArrayList<>(this.animals.values());
+
+        var positionComparator = Comparator.comparing((Animal animal) -> animal.getPosition().getX())
+                .thenComparing((Animal animal) -> animal.getPosition().getY());
+
+        Collections.sort(animalsList, positionComparator);
+
+        return animalsList;
+    }
+
+    @Override
     public List<WorldElement> getElements() {
         return new ArrayList<>(this.animals.values());
     }

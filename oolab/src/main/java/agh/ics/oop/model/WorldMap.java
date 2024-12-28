@@ -4,6 +4,7 @@ import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.exceptions.IncorrectPositionException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,4 +67,11 @@ public interface WorldMap extends MoveValidator {
      * @return object's UUID
      */
     UUID getId();
+
+    /**
+     * Return all animals placed on map ordered by x coordinate and then by y coordinate
+     *
+     * @return collection of ordered animals
+     */
+    Collection<Animal> getOrderedAnimals();
 }
