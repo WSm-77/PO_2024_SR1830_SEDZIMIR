@@ -21,6 +21,7 @@ import javafx.scene.layout.RowConstraints;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class SimulationPresenter implements MapChangeListener {
     public static final String NO_MOVES_PROVIDED_ALERT_TITLE = "No moves provided";
@@ -109,8 +110,11 @@ public class SimulationPresenter implements MapChangeListener {
             for (int gridColumn = 0; gridColumn < gridColumnCnt; gridColumn++) {
                 var mapPosition = upperLeft.add(new Vector2d(gridColumn, -gridRow));
                 Label field = new Label();
-                field.setText(this.worldMap.isOccupied(mapPosition) ? this.worldMap.objectAt(mapPosition).toString()
-                        : SimulationPresenter.EMPTY_CELL_STRING_REPRESENTATION);
+                field.setText(
+                    this.worldMap.objectAt(mapPosition)
+                        .map(WorldElement::toString)
+                        .orElse(SimulationPresenter.EMPTY_CELL_STRING_REPRESENTATION)
+                );
                 this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
 
                 GridPane.setHalignment(field, HPos.CENTER);
