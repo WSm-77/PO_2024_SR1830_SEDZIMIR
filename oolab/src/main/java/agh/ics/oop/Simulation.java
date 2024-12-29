@@ -14,6 +14,8 @@ public class Simulation implements Runnable {
     private final List<MoveDirection> moves;
     private final WorldMap worldMap;
     public static final String INTERRUPTION_MESSAGE_TEMPLATE = "Simulation of map %s interrupted!!!\n";
+    public static final String INTERRUPTION_DURING_SLEEP_MESSAGE_TEMPLATE = "Simulation of map %s interrupted during sleep!!!\n";
+    public static final int SIMULATION_REFRESH_TIME_MS = 500;
 
     public Simulation(List<Vector2d> positions, List<MoveDirection> moves, WorldMap worldMap) {
         this.worldMap = worldMap;
@@ -50,6 +52,10 @@ public class Simulation implements Runnable {
         return String.format(Simulation.INTERRUPTION_MESSAGE_TEMPLATE, this.worldMap.getId());
     }
 
+    private String createInterruptionDuringSleepMessage() {
+        return String.format(Simulation.INTERRUPTION_DURING_SLEEP_MESSAGE_TEMPLATE, this.worldMap.getId());
+    }
+
     @Override
     public void run() {
         if (this.animals.isEmpty()){
@@ -64,6 +70,13 @@ public class Simulation implements Runnable {
             if (Thread.currentThread().isInterrupted()) {
                 System.out.println(this.createTimeoutReachedMessage());
                 return;
+            }
+
+            try {
+                Thread.sleep(Simulation.SIMULATION_REFRESH_TIME_MS);
+            } catch (InterruptedException e) {
+                 System.out.println(this.createInterruptionDuringSleepMessage());
+                 return;
             }
 
             // check if we reached end of animals list
