@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.util.ConsoleMapDisplay;
+import agh.ics.oop.model.util.FileMapDisplay;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -59,6 +60,8 @@ public class World {
             System.out.println(String.format(mapChangeWithDateAndTimeMessageTemplate, formattedDate, message));
         };
 
+        MapChangeListener fileLogger = new FileMapDisplay();
+
         // Simulation
         var repeatedPosition = new Vector2d(2, 2);
         List<Vector2d> positions = List.of(repeatedPosition, repeatedPosition, new Vector2d(3, 4));
@@ -68,12 +71,14 @@ public class World {
         MapChangeListener consoleLog = new ConsoleMapDisplay();
         rectangularMap.subscribe(dateAndTimeMapLogger);
         rectangularMap.subscribe(consoleLog);
+        rectangularMap.subscribe(fileLogger);
         var rectangularMapSimulation = new Simulation(positions, directions, rectangularMap);
 
         // 2. GrassField Simulation
         var grassField = new GrassField(10);
         grassField.subscribe(dateAndTimeMapLogger);;
         grassField.subscribe(consoleLog);
+        grassField.subscribe(fileLogger);
         var grassFieldMapSimulation = new Simulation(positions, directions, grassField);
 
         // Utilize Simulation Engine
