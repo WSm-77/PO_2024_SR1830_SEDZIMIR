@@ -6,6 +6,8 @@ import agh.ics.oop.model.util.RandomPositionGenerator;
 import java.util.*;
 
 import java.lang.Math;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GrassField extends AbstractWorldMap {
     private final Map<Vector2d, Grass> grassFields = new HashMap<>();
@@ -54,15 +56,14 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
-        WorldElement worldElement = super.objectAt(position);
-        return worldElement != null ? worldElement : this.grassFields.get(position);
+    public Optional<WorldElement> objectAt(Vector2d position) {
+        var worldElement = super.objectAt(position);
+        return worldElement.isPresent() ? worldElement : Optional.ofNullable(this.grassFields.get(position));
     }
 
     @Override
     public List<WorldElement> getElements() {
-        var concatenatedList = super.getElements();
-        concatenatedList.addAll(this.grassFields.values());
-        return concatenatedList;
+        return Stream.concat(this.grassFields.values().stream(), this.animals.values().stream())
+                .collect(Collectors.toList());
     }
 }

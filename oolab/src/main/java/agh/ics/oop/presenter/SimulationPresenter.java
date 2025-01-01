@@ -18,7 +18,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class SimulationPresenter implements MapChangeListener {
     public static final String NO_MOVES_PROVIDED_ALERT_TITLE = "No moves provided";
@@ -70,12 +73,15 @@ public class SimulationPresenter implements MapChangeListener {
         double cellHeight = maxHeight / rows;
         double cellWidth = maxWidth / columns;
 
+        var rowConstraint = new RowConstraints(cellHeight);
+        var columnConstraint = new ColumnConstraints(cellWidth);
+
         for (int i = 0; i < rows; i++){
-            mapGrid.getRowConstraints().add(new RowConstraints(cellHeight));
+            mapGrid.getRowConstraints().add(rowConstraint);
         }
 
         for (int i = 0; i < columns; i++){
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(cellWidth));
+            mapGrid.getColumnConstraints().add(columnConstraint);
         }
     }
 
@@ -106,13 +112,17 @@ public class SimulationPresenter implements MapChangeListener {
         for (int gridRow = 0; gridRow < gridRowCnt; gridRow++) {
             for (int gridColumn = 0; gridColumn < gridColumnCnt; gridColumn++) {
                 var mapPosition = upperLeft.add(new Vector2d(gridColumn, -gridRow));
-                Label field = new Label();
-                field.setText(this.worldMap.isOccupied(mapPosition) ? this.worldMap.objectAt(mapPosition).toString()
-                        : SimulationPresenter.EMPTY_CELL_STRING_REPRESENTATION);
-                this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
+                Optional<WorldElement> optionalWorldElement = this.worldMap.objectAt(mapPosition);
+                if (optionalWorldElement.isPresent()) {
+                    WorldElementBox worldElementBox = new WorldElementBox(optionalWorldElement.get());
+                    var field = worldElementBox.getBox();
 
-                GridPane.setHalignment(field, HPos.CENTER);
-                GridPane.setValignment(field, VPos.CENTER);
+                    this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
+
+                    GridPane.setHalignment(field, HPos.CENTER);
+                    GridPane.setValignment(field, VPos.CENTER);
+                }
+
             }
         }
     }
@@ -159,8 +169,19 @@ public class SimulationPresenter implements MapChangeListener {
 
         MapChangeListener consoleLog = new ConsoleMapDisplay();
 
+        // create MapChangeListener with lambda expression
+        MapChangeListener dateAndTimeMapLogger = (WorldMap worldMap, String message) -> {
+            final String dateFormatTemplate = "yyyy-mm-dd hh:mm:ss";
+            final String mapChangeWithDateAndTimeMessageTemplate = "%s %s";
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatTemplate);
+            String formattedDate = dateFormat.format(currentDate);
+            System.out.println(String.format(mapChangeWithDateAndTimeMessageTemplate, formattedDate, message));
+        };
+
         // GrassField Simulation
         var grassField = new GrassField(SimulationPresenter.TOTAL_GRASS_ON_GRASS_FIELD_MAP);
+        grassField.subscribe(dateAndTimeMapLogger);
         grassField.subscribe(consoleLog);
         grassField.subscribe(this);
         this.setWorldMap(grassField);

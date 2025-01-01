@@ -1,7 +1,7 @@
 package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MapDirectionTest {
     private final MapDirection north = MapDirection.NORTH;

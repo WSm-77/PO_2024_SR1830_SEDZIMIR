@@ -4,6 +4,8 @@ import agh.ics.oop.model.MoveDirection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OptionsParser {
     public static final String ILLEGAL_MOVE_MESSAGE_TEMPLATE = "%s is not legal move specification";
@@ -13,18 +15,14 @@ public class OptionsParser {
     }
 
     public static List<MoveDirection> parseStringArray (String[] options) {
-        ArrayList<MoveDirection> directions = new ArrayList<>();
-
-        for (var option : options) {
-            switch (option) {
-                case "f", "forward" -> directions.add(MoveDirection.FORWARD);
-                case "b", "backward" -> directions.add(MoveDirection.BACKWARD);
-                case "l", "left" -> directions.add(MoveDirection.LEFT);
-                case "r", "right" -> directions.add(MoveDirection.RIGHT);
-                default -> throw new IllegalArgumentException(OptionsParser.createIllegalMoveMessage(option));
-            }
-        }
-
-        return directions;
+        return Stream.of(options)
+                .map(option -> switch (option) {
+                    case "f", "forward" -> MoveDirection.FORWARD;
+                    case "b", "backward" -> MoveDirection.BACKWARD;
+                    case "l", "left" -> MoveDirection.LEFT;
+                    case "r", "right" -> MoveDirection.RIGHT;
+                    default -> throw new IllegalArgumentException(OptionsParser.createIllegalMoveMessage(option));
+                })
+                .collect(Collectors.toList());
     }
 }

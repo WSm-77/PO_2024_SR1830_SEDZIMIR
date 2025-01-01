@@ -4,6 +4,9 @@ import agh.ics.oop.model.exceptions.IncorrectPositionException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class RectangularMapIT {
     private final WorldMap worldMap = new RectangularMap(4, 4);
 
@@ -174,5 +177,47 @@ class RectangularMapIT {
 
         // then
         Assertions.assertFalse(canAnimalBeMoved);
+    }
+
+    @Test
+    void getOrderedAnimalsReturnsAnimalsInCorrectOrder() {
+        // given
+        List<Vector2d> positionsToPlace = new ArrayList<>(List.of(
+                new Vector2d(2, 2),
+                new Vector2d(1, 1),
+                new Vector2d(1, 0),
+                new Vector2d(3, 3),
+                new Vector2d(4, 4),
+                new Vector2d(3, 4),
+                new Vector2d(0, 0)
+        ));
+
+        List<Vector2d> expectedPositionsAfterSorting = new ArrayList<>(List.of(
+                new Vector2d(0, 0),
+                new Vector2d(1, 0),
+                new Vector2d(1, 1),
+                new Vector2d(2, 2),
+                new Vector2d(3, 3),
+                new Vector2d(3, 4),
+                new Vector2d(4, 4)
+        ));
+
+        // when
+        // then
+        for (var position : positionsToPlace) {
+            var animalToPlace = new Animal(position);
+
+            Assertions.assertDoesNotThrow(() -> {
+                this.worldMap.place(animalToPlace);
+            });
+        }
+
+        var expectedPositionsAfterSortingIterator = expectedPositionsAfterSorting.iterator();
+
+        for (var animal : this.worldMap.getOrderedAnimals()) {
+            var expectedPosition = expectedPositionsAfterSortingIterator.next();
+
+            Assertions.assertEquals(animal.getPosition(), expectedPosition);
+        }
     }
 }
