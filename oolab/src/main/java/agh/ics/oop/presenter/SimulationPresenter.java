@@ -109,16 +109,17 @@ public class SimulationPresenter implements MapChangeListener {
         for (int gridRow = 0; gridRow < gridRowCnt; gridRow++) {
             for (int gridColumn = 0; gridColumn < gridColumnCnt; gridColumn++) {
                 var mapPosition = upperLeft.add(new Vector2d(gridColumn, -gridRow));
-                Label field = new Label();
-                field.setText(
-                    this.worldMap.objectAt(mapPosition)
-                        .map(WorldElement::toString)
-                        .orElse(SimulationPresenter.EMPTY_CELL_STRING_REPRESENTATION)
-                );
-                this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
+                Optional<WorldElement> optionalWorldElement = this.worldMap.objectAt(mapPosition);
+                if (optionalWorldElement.isPresent()) {
+                    WorldElementBox worldElementBox = new WorldElementBox(optionalWorldElement.get());
+                    var field = worldElementBox.getBox();
 
-                GridPane.setHalignment(field, HPos.CENTER);
-                GridPane.setValignment(field, VPos.CENTER);
+                    this.mapGrid.add(field,  gridColumn + 1, gridRow + 1, 1, 1);
+
+                    GridPane.setHalignment(field, HPos.CENTER);
+                    GridPane.setValignment(field, VPos.CENTER);
+                }
+
             }
         }
     }
