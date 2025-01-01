@@ -1,9 +1,15 @@
 package agh.ics.oop.model;
 
+import java.util.Map;
+
 public class Animal implements WorldElement {
     public static final Vector2d DEFAULT_POSITION = new Vector2d(2, 2);
     public static final MapDirection DEFAULT_ORIENTATION = MapDirection.NORTH;
     public static final int NO_FIRST_CHARACTERS_OF_ORIENTATION_NAME = 1;
+    public final static String ANIMAL_WITH_NORTH_ORIENTATION_RESOURCE_FILE_NAME = "up.png";
+    public final static String ANIMAL_WITH_EAST_ORIENTATION_RESOURCE_FILE_NAME = "right.png";
+    public final static String ANIMAL_WITH_SOUTH_ORIENTATION_RESOURCE_FILE_NAME = "down.png";
+    public final static String ANIMAL_WITH_WEST_ORIENTATION_RESOURCE_FILE_NAME = "left.png";
 
     private MapDirection orientation;
     private Vector2d position;
@@ -50,6 +56,16 @@ public class Animal implements WorldElement {
     @Override
     public Vector2d getPosition() {
         return this.position;
+    }
+
+    @Override
+    public String getResourceFileName() {
+        return switch (this.getOrientation()) {
+            case MapDirection.NORTH -> Animal.ANIMAL_WITH_NORTH_ORIENTATION_RESOURCE_FILE_NAME;
+            case MapDirection.EAST -> Animal.ANIMAL_WITH_EAST_ORIENTATION_RESOURCE_FILE_NAME;
+            case MapDirection.SOUTH -> Animal.ANIMAL_WITH_SOUTH_ORIENTATION_RESOURCE_FILE_NAME;
+            case MapDirection.WEST -> Animal.ANIMAL_WITH_WEST_ORIENTATION_RESOURCE_FILE_NAME;
+        };
     }
 
     public MapDirection getOrientation() {
