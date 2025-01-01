@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import com.sun.javafx.beans.event.AbstractNotifyListener;
+
 import java.util.Map;
 
 public class Animal implements WorldElement {
@@ -10,6 +12,7 @@ public class Animal implements WorldElement {
     public final static String ANIMAL_WITH_EAST_ORIENTATION_RESOURCE_FILE_NAME = "right.png";
     public final static String ANIMAL_WITH_SOUTH_ORIENTATION_RESOURCE_FILE_NAME = "down.png";
     public final static String ANIMAL_WITH_WEST_ORIENTATION_RESOURCE_FILE_NAME = "left.png";
+    public final static String ANIMAL_LABEL_TEMPLATE = "Animal %s";
 
     private MapDirection orientation;
     private Vector2d position;
@@ -66,6 +69,11 @@ public class Animal implements WorldElement {
             case MapDirection.SOUTH -> Animal.ANIMAL_WITH_SOUTH_ORIENTATION_RESOURCE_FILE_NAME;
             case MapDirection.WEST -> Animal.ANIMAL_WITH_WEST_ORIENTATION_RESOURCE_FILE_NAME;
         };
+    }
+
+    @Override
+    public String getLabelString() {
+        return String.format(Animal.ANIMAL_LABEL_TEMPLATE, this.getPosition());
     }
 
     public MapDirection getOrientation() {
