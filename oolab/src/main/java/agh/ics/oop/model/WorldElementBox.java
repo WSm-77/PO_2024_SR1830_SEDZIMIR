@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 public class WorldElementBox {
     public static double ELEMENT_WIDTH = 20.0;
     public static double ELEMENT_HEIGHT = 20.0;
+    public static double BOX_MAX_WIDTH = 50.0;
+    public static double BOX_MAX_HEIGHT = 50.0;
     final private WorldElement worldElement;
     final private ImageView elementImageView;
     final private Label label;
@@ -30,6 +32,8 @@ public class WorldElementBox {
 
         this.box = new VBox();
         this.box.getChildren().addAll(this.elementImageView, this.label);
+        this.box.setMaxHeight(WorldElementBox.BOX_MAX_HEIGHT);
+        this.box.setMaxWidth(WorldElementBox.BOX_MAX_WIDTH);
         this.box.setAlignment(Pos.CENTER);
     }
 

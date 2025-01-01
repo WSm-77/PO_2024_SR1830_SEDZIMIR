@@ -73,12 +73,15 @@ public class SimulationPresenter implements MapChangeListener {
         double cellHeight = maxHeight / rows;
         double cellWidth = maxWidth / columns;
 
+        var rowConstraint = new RowConstraints(cellHeight);
+        var columnConstraint = new ColumnConstraints(cellWidth);
+
         for (int i = 0; i < rows; i++){
-            mapGrid.getRowConstraints().add(new RowConstraints(cellHeight));
+            mapGrid.getRowConstraints().add(rowConstraint);
         }
 
         for (int i = 0; i < columns; i++){
-            mapGrid.getColumnConstraints().add(new ColumnConstraints(cellWidth));
+            mapGrid.getColumnConstraints().add(columnConstraint);
         }
     }
 
