@@ -104,10 +104,10 @@ class GrassFieldIT {
         var notOccupiedPosition = new Vector2d(-1, -1);
 
         // when
-        var nullObject = this.worldMap.objectAt(notOccupiedPosition);
+        var emptyOptional = this.worldMap.objectAt(notOccupiedPosition);
 
         // then
-        Assertions.assertNull(nullObject);
+        Assertions.assertFalse(emptyOptional.isPresent());
     }
 
     @Test
@@ -118,7 +118,7 @@ class GrassFieldIT {
         // when
         List<WorldElement> objectsList = new ArrayList<>();
         for (var grass : grassList) {
-            objectsList.add(this.worldMap.objectAt(grass.getPosition()));
+            objectsList.add(this.worldMap.objectAt(grass.getPosition()).get());
         }
 
         // then
@@ -135,7 +135,7 @@ class GrassFieldIT {
         Assertions.assertDoesNotThrow(() -> {
             this.worldMap.place(animal);
         });
-        var animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal);
+        var animalAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimal).get();
 
         // then
         Assertions.assertEquals(animal, animalAtGivenPosition);
@@ -152,7 +152,7 @@ class GrassFieldIT {
         Assertions.assertDoesNotThrow(() -> {
             this.worldMap.place(animal);
         });
-        var objectAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimalAndGrass);
+        var objectAtGivenPosition = this.worldMap.objectAt(positionOccupiedByAnimalAndGrass).get();
 
         // then
         Assertions.assertEquals(animal, objectAtGivenPosition);
